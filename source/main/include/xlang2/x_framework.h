@@ -46,7 +46,7 @@ Framework that hosts and executes actors.
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 
 
@@ -1144,7 +1144,7 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #ifdef _MSC_VER

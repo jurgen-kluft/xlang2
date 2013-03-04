@@ -34,7 +34,7 @@ Utility that can receive messages from actors.
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -555,7 +555,7 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #ifdef _MSC_VER

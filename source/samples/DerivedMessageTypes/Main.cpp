@@ -2,13 +2,13 @@
 // This sample shows how to use derivation to create subclasses of messages.
 //
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
+#include "xlang2\x_actor.h"
+#include "xlang2\x_framework.h"
+#include "xlang2\x_receiver.h"
 
 // Placement new/delete
-void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
-void	operator delete(void* mem, void* )							{ }
+//void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+//void	operator delete(void* mem, void* )							{ }
 
 
 // A base message type.
@@ -41,7 +41,7 @@ public:
 
 
 // A simple actor that accepts messages of two related types.
-class SimpleActor : public xlang::Actor
+class SimpleActor : public xlang2::Actor
 {
 public:
 
@@ -54,14 +54,14 @@ public:
 private:
 
     // Handler for messages of type BaseMessage.
-    inline void BaseMessageHandler(const BaseMessage &message, const xlang::Address from)
+    inline void BaseMessageHandler(const BaseMessage &message, const xlang2::Address from)
     {
         Send(message, from);
         printf("Received BaseMessage with value '%d'\n", message.mBaseValue);
     }
 
     // Handler for messages of type DerivedMessage.
-    inline void DerivedMessageHandler(const DerivedMessage &message, const xlang::Address from)
+    inline void DerivedMessageHandler(const DerivedMessage &message, const xlang2::Address from)
     {
         Send(message, from);
         printf("Received DerivedMessage with base value '%d', derived value '%d'\n", message.mBaseValue, message.mDerivedValue);
@@ -71,10 +71,10 @@ private:
 
 int main()
 {
-    xlang::Framework framework;
-    xlang::ActorRef simpleActor(framework.CreateActor<SimpleActor>());
+    xlang2::Framework framework;
+    xlang2::ActorRef simpleActor(framework.CreateActor<SimpleActor>());
 
-    xlang::Receiver receiver;
+    xlang2::Receiver receiver;
     
     // Send two messages, one a base message and the other a derived message.
     // By virtue of derivation both messages are valid BaseMessage messages.

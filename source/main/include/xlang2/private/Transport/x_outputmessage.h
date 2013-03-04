@@ -14,7 +14,7 @@
 #include "xlang2\private\transport\x_context.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -114,7 +114,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_TRANSPORT_OUTPUTMESSAGE_H

@@ -8,7 +8,7 @@
 #include "xlang2\private\handlers\x_messagehandler.h"
 #include "xlang2\private\messages\x_messagetraits.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -67,35 +67,8 @@ namespace Theron
 			}
 		};
 
-
-		// Specialization of the MessageHandlerCast for the case where the message type has no type name.
-		// This specialization uses C++ built-in RTTI instead of explicitly stored type names.
-		template <class ActorType>
-		class MessageHandlerCast<ActorType, false>
-		{
-		public:
-
-			/**
-			Attempts to convert the given message handler, of unknown message type, to a handler of the given type.
-			\note Returns a null pointer if the unknown handler is of the wrong type.
-			*/
-			template <class ValueType>
-			THERON_FORCEINLINE static const MessageHandler<ActorType, ValueType> *CastHandler(const IMessageHandler *const handler)
-			{
-				THERON_ASSERT(handler);
-
-				// Explicit type names must be defined for all message types or none at all.
-				THERON_ASSERT_MSG(handler->GetMessageTypeName() == 0, "Type names specified for only some message types!");
-
-				// Try to convert the given message handler to this type.
-				typedef MessageHandler<ActorType, ValueType> HandlerType;
-				return dynamic_cast<const HandlerType *>(handler);
-			}
-		};
-
-
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_MESSAGEHANDLERCAST_H

@@ -83,19 +83,19 @@ in every compilation unit.
 #include <assert.h>
 
 #ifndef THERON_ASSERT
-#define THERON_ASSERT(condition)                if (!(condition)) Theron::Detail::Fail(__FILE__, __LINE__); else { }
+#define THERON_ASSERT(condition)                if (!(condition)) xlang2::Detail::Fail(__FILE__, __LINE__); else { }
 #endif // THERON_ASSERT
 
 #ifndef THERON_ASSERT_MSG
-#define THERON_ASSERT_MSG(condition, msg)       if (!(condition)) Theron::Detail::Fail(__FILE__, __LINE__, msg); else { }
+#define THERON_ASSERT_MSG(condition, msg)       if (!(condition)) xlang2::Detail::Fail(__FILE__, __LINE__, msg); else { }
 #endif // THERON_ASSERT_MSG
 
 #ifndef THERON_FAIL
-#define THERON_FAIL()                           Theron::Detail::Fail(__FILE__, __LINE__)
+#define THERON_FAIL()                           xlang2::Detail::Fail(__FILE__, __LINE__)
 #endif // THERON_FAIL
 
 #ifndef THERON_FAIL_MSG
-#define THERON_FAIL_MSG(msg)                    Theron::Detail::Fail(__FILE__, __LINE__, msg)
+#define THERON_FAIL_MSG(msg)                    xlang2::Detail::Fail(__FILE__, __LINE__, msg)
 #endif // THERON_ASSERT
 
 #else
@@ -120,7 +120,7 @@ in every compilation unit.
 
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -147,7 +147,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_DEBUG_ASSERT_H

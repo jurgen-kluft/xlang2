@@ -10,7 +10,7 @@
 #include "xlang2\private\messages\x_message.h"
 #include "xlang2\private\handlers\x_idefaulthandler.h"
 
-namespace Theron
+namespace xlang2
 {
 	class Actor;
 
@@ -80,7 +80,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_BLINDDEFAULTHANDLER_H

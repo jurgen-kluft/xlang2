@@ -8,7 +8,7 @@
 #include "xlang2\private\containers\x_list.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -273,7 +273,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_CONTAINERS_MAP_H

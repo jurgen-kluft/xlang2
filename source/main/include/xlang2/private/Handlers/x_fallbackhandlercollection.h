@@ -15,7 +15,7 @@
 #include "xlang2\private\messages\x_imessage.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -145,7 +145,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_FALLBACKHANDLERCOLLECTION_H

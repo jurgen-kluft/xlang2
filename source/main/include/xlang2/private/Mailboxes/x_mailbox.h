@@ -10,7 +10,7 @@
 #include "xlang2\private\messages\x_imessage.h"
 #include "xlang2\private\mailboxprocessor\x_workqueue.h"
 #include "xlang2\private\network\x_string.h"
-#include "xlang2\private\xthreading\x_spinlock.h"
+#include "xlang2\private\threading\x_spinlock.h"
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -18,7 +18,7 @@
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 	class Actor;
 
@@ -246,7 +246,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #ifdef _MSC_VER

@@ -15,7 +15,7 @@ Legacy support for actor references, which were deprecated in version 4.0.
 #include "xlang2\private\messages\x_messagesender.h"
 #include "xlang2\private\mailboxprocessor\x_processor.h"
 
-namespace Theron
+namespace xlang2
 {
 	class Actor;
 	class Framework;
@@ -296,7 +296,7 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_ACTORREF_H

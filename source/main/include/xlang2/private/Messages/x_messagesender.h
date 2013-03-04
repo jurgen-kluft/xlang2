@@ -16,7 +16,7 @@
 #include "xlang2\private\mailboxprocessor\x_processor.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	class EndPoint;
 
@@ -48,7 +48,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_MESSAGES_MESSAGESENDER_H

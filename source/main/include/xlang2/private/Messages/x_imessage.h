@@ -8,7 +8,7 @@
 
 #include "xlang2\private\containers\x_queue.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -107,7 +107,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_MESSAGES_IMESSAGE_H

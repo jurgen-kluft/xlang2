@@ -18,7 +18,7 @@ Utility that catches messages received by a Receiver.
 #include "xlang2\private\containers\x_queue.h"
 #include "xlang2\private\threading\x_spinlock.h"
 
-namespace Theron
+namespace xlang2
 {
 	/**
 	\brief A simple utility class template that catches messages received by a \ref Receiver.
@@ -218,7 +218,7 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_CATCHER_H

@@ -6,7 +6,7 @@
 Performance event counters.
 */
 
-namespace Theron
+namespace xlang2
 {
 	/**
 	\brief Enumerated type that lists event counters available for querying.
@@ -26,7 +26,7 @@ namespace Theron
 	};
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_COUNTERS_H

@@ -14,7 +14,7 @@
 #include "xlang2\private\network\x_string.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	Receiver::Receiver()
 		: mEndPoint(0)
@@ -129,6 +129,6 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 

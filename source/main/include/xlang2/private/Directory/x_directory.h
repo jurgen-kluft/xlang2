@@ -12,7 +12,7 @@
 #include "xlang2\private\threading\x_spinlock.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -153,7 +153,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_DIRECTORY_DIRECTORY_H

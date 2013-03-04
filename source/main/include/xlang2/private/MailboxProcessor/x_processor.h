@@ -13,7 +13,7 @@
 #include "xlang2\private\mailboxes\x_mailbox.h"
 #include "xlang2\private\mailboxprocessor\x_workqueue.h"
 #include "xlang2\private\threading\x_atomic.h"
-#include "xlang2\private\xthreading\x_spinlock.h"
+#include "xlang2\private\threading\x_spinlock.h"
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -21,7 +21,7 @@
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -161,7 +161,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #ifdef _MSC_VER

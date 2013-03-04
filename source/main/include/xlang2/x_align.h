@@ -29,14 +29,14 @@ Use of this macro is optional. Using it, users can notify Theron of any
 specialized memory alignment requirements of their custom actor classes.
 If the memory alignment of an actor type is specified using this macro,
 Theron will request correctly aligned memory when allocating instances
-of that actor type in \ref Theron::Framework::CreateActor. If not, then a default
+of that actor type in \ref xlang2::Framework::CreateActor. If not, then a default
 alignment of four bytes will be used.
 
 \code
 namespace MyNamespace
 {
 
-class MyActor : public Theron::Actor
+class MyActor : public xlang2::Actor
 {
 };
 
@@ -53,13 +53,13 @@ immediately after their declaration, as we'd often prefer.
 
 \note Specifying the alignment requirements of an actor type is not enough,
 by itself, to guarantee correct alignment of actor allocations. Users must also
-ensure that any custom allocator provided via \ref Theron::AllocatorManager::SetAllocator
+ensure that any custom allocator provided via \ref xlang2::AllocatorManager::SetAllocator
 supports aligned allocations. The DefaultAllocator, used by default, supports alignment.
 */
 
 #ifndef THERON_ALIGN_ACTOR
 #define THERON_ALIGN_ACTOR(ActorType, alignment)                            \
-namespace Theron                                                            \
+namespace xlang2                                                            \
 {                                                                           \
 	namespace Detail                                                        \
 	{                                                                       \
@@ -106,14 +106,14 @@ immediately after their declaration, as we'd often prefer.
 
 \note Specifying the alignment requirements of an actor type is not enough,
 by itself, to guarantee correct alignment of actor allocations. Users must also
-ensure that any custom allocator provided via \ref Theron::AllocatorManager::SetAllocator
+ensure that any custom allocator provided via \ref xlang2::AllocatorManager::SetAllocator
 supports aligned allocations. The DefaultAllocator, used by default, does support alignment.
 */
 
 
 #ifndef THERON_ALIGN_MESSAGE
 #define THERON_ALIGN_MESSAGE(MessageType, alignment)                        \
-namespace Theron                                                            \
+namespace xlang2                                                            \
 {                                                                           \
 	namespace Detail                                                        \
 	{                                                                       \
@@ -256,7 +256,7 @@ code before any Theron headers.
 
 
 #ifndef THERON_ALIGN
-#define THERON_ALIGN(p, alignment) Theron::Detail::AlignPointer(p, alignment)
+#define THERON_ALIGN(p, alignment) xlang2::Detail::AlignPointer(p, alignment)
 #endif // THERON_ALIGN
 
 
@@ -270,7 +270,7 @@ code before any Theron headers.
 
 
 #ifndef THERON_ALIGNED
-#define THERON_ALIGNED(pointer, alignment) Theron::Detail::IsAligned(pointer, alignment)
+#define THERON_ALIGNED(pointer, alignment) xlang2::Detail::IsAligned(pointer, alignment)
 #endif // THERON_ALIGNED
 
 
@@ -284,11 +284,11 @@ code before any Theron headers.
 
 
 #ifndef THERON_ROUNDUP
-#define THERON_ROUNDUP(i, alignment) Theron::Detail::RoundUp(i, alignment)
+#define THERON_ROUNDUP(i, alignment) xlang2::Detail::RoundUp(i, alignment)
 #endif // THERON_ROUNDUP
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -327,7 +327,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_ALIGN_H

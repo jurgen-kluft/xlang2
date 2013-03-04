@@ -9,7 +9,7 @@
 #include "xlang2\private\handlers\x_ifallbackhandler.h"
 #include "xlang2\private\messages\x_imessage.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -35,7 +35,7 @@ namespace Theron
 			THERON_FORCEINLINE BlindFallbackHandler(ObjectType *const object, HandlerFunction function)
 				: mObject(object)
 				, mHandlerFunction(function)
-			
+			{
 			}
 
 			/**
@@ -75,7 +75,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_BLINDFALLBACKHANDLER_H

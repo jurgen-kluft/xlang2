@@ -9,7 +9,7 @@
 #include "xlang2\x_defines.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	// In Boost builds we reuse the convenient Boost integer types.
 	typedef xcore::u8 uint8_t;

@@ -11,7 +11,7 @@
 #include "xlang2\private\messages\x_messagecast.h"
 #include "xlang2\private\messages\x_messagetraits.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -110,7 +110,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_RECEIVERHANDLER_H

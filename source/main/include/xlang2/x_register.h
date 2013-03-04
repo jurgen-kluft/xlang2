@@ -84,7 +84,7 @@ build, ideally via build settings.
 #ifndef THERON_DECLARE_REGISTERED_MESSAGE
 
 #define THERON_DECLARE_REGISTERED_MESSAGE(MessageType)                      \
-namespace Theron                                                            \
+namespace xlang2                                                            \
 {                                                                           \
 	namespace Detail                                                        \
 	{                                                                       \
@@ -116,7 +116,7 @@ replace \ref THERON_REGISTER_MESSAGE, which is deprecated.
 #ifndef THERON_DEFINE_REGISTERED_MESSAGE
 
 #define THERON_DEFINE_REGISTERED_MESSAGE(MessageType)                              \
-namespace Theron                                                                   \
+namespace xlang2                                                                   \
 {                                                                                  \
 	namespace Detail                                                               \
 	{                                                                              \
@@ -142,7 +142,7 @@ and \ref THERON_DEFINE_REGISTERED_MESSAGE instead.
 #ifndef THERON_REGISTER_MESSAGE
 
 #define THERON_REGISTER_MESSAGE(MessageType)                                        \
-namespace Theron                                                                    \
+namespace xlang2                                                                    \
 {                                                                                   \
 	namespace Detail                                                                \
 	{                                                                               \

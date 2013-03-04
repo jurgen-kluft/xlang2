@@ -1,8 +1,8 @@
 #include "xlang2\x_allocatormanager.h"
 
-namespace Theron
+namespace xlang2
 {
 	AllocatorManager AllocatorManager::smInstance;
-} // namespace Theron
+} // namespace xlang2
 
 

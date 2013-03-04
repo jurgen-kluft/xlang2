@@ -8,7 +8,7 @@
 #include "xlang2\x_assert.h"
 #include "xlang2\x_defines.h"
 
-namespace Theron
+namespace xlang2
 {
 	class Actor;
 
@@ -72,7 +72,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_DEFAULTHANDLER_H

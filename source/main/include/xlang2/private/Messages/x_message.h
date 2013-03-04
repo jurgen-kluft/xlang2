@@ -13,7 +13,7 @@
 #include "xlang2\private\messages\x_messagetraits.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -145,7 +145,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_MESSAGES_MESSAGE_H

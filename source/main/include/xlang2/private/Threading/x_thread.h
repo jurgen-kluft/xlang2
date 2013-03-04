@@ -37,7 +37,7 @@
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -533,7 +533,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_THREADING_THREAD_H

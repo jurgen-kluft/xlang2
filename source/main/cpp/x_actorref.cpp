@@ -1,11 +1,11 @@
-#include "xlang2\Actor.h"
-#include "xlang2\ActorRef.h"
+#include "xlang2\x_actor.h"
+#include "xlang2\x_actorref.h"
 #include "xlang2\x_allocatormanager.h"
-#include "xlang2\Framework.h"
+#include "xlang2\x_framework.h"
 
-#include "xlang2\Detail\Threading\Atomic.h"
+#include "xlang2\private\threading\x_atomic.h"
 
-namespace Theron
+namespace xlang2
 {
 	Address ActorRef::GetAddress() const
 	{
@@ -64,4 +64,4 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2

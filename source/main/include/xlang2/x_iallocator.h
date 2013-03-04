@@ -8,7 +8,7 @@ Allocator interface.
 
 #include "xlang2\x_basictypes.h"
 
-namespace Theron
+namespace xlang2
 {
 	/**
 	\brief Interface describing a general-purpose memory allocator.
@@ -100,7 +100,7 @@ namespace Theron
 	};
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_IALLOCATOR_H

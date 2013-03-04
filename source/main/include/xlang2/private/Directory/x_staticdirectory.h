@@ -11,10 +11,10 @@
 
 #include "xlang2\private\directory\x_directory.h"
 #include "xlang2\private\directory\x_entry.h"
-#include "xlang2\private\xthreading\x_spinlock.h"
+#include "xlang2\private\threading\x_spinlock.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -149,7 +149,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_DIRECTORY_STATICDIRECTORY_H

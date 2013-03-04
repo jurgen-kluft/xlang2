@@ -2,7 +2,7 @@
 #include "xlang2\x_assert.h"
 #include "xlang2\x_framework.h"
 
-namespace Theron
+namespace xlang2
 {
 	Actor::Actor()
 		: mAddress()
@@ -48,4 +48,4 @@ namespace Theron
 		fallbackHandlers->Handle(message);
 	}
 
-} // namespace Theron
+} // namespace xlang2

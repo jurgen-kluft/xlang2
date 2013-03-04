@@ -2,14 +2,14 @@
 // This sample shows how to register message handlers in an actor class.
 //
 
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
-#include "xlang\x_Actor.h"
+#include "xlang2\x_framework.h"
+#include "xlang2\x_receiver.h"
+#include "xlang2\x_actor.h"
 
 
 // Placement new/delete
-void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
-void	operator delete(void* mem, void* )							{ }
+//void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+//void	operator delete(void* mem, void* )							{ }
 
 
 struct Message
@@ -22,7 +22,7 @@ struct Message
 
 
 // An example actor with two different handlers for the same message type.
-class ExampleActor : public xlang::Actor
+class ExampleActor : public xlang2::Actor
 {
 public:
 
@@ -34,7 +34,7 @@ public:
 
 private:
 
-    inline void HandlerOne(const Message &message, const xlang::Address from)
+    inline void HandlerOne(const Message &message, const xlang2::Address from)
     {
         printf("Handler ONE received message with value '%d'\n", message.mValue);
         
@@ -45,7 +45,7 @@ private:
         Send(message, from);
     }
 
-    inline void HandlerTwo(const Message &message, const xlang::Address from)
+    inline void HandlerTwo(const Message &message, const xlang2::Address from)
     {
         printf("Handler TWO received message with value '%d'\n", message.mValue);
 
@@ -60,10 +60,10 @@ private:
 
 int main()
 {
-    xlang::Framework framework;
-    xlang::ActorRef exampleActor(framework.CreateActor<ExampleActor>());
+    xlang2::Framework framework;
+    xlang2::ActorRef exampleActor(framework.CreateActor<ExampleActor>());
 
-    xlang::Receiver receiver;
+    xlang2::Receiver receiver;
 
     // Send a series of messages to the actor.
     // Each time it receives a message it switches handlers, so that

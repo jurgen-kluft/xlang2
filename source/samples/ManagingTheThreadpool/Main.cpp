@@ -20,34 +20,33 @@
 
 #include "xbase\x_allocator.h"
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
-#include "xlang\x_Register.h"
-
+#include "xlang2\x_actor.h"
+#include "xlang2\x_framework.h"
+#include "xlang2\x_receiver.h"
+#include "xlang2\x_register.h"
 
 static const int PROCESSOR_ACTORS = 10;
 static const int REQUESTS_PER_ACTOR = 100000;
 static const int REQUEST_BATCH_SIZE = 50;
 
 // Placement new/delete
-void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
-void	operator delete(void* mem, void* )							{ }
+//void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+//void	operator delete(void* mem, void* )							{ }
 
 // Does some processing in response to messages, and then sends back the result.
-class Processor : public xlang::Actor
+class Processor : public xlang2::Actor
 {
 public:
 
     inline Processor()
-    {
+    
         RegisterHandler(this, &Processor::Process);
     }
 
 	//XCORE_CLASS_PLACEMENT_NEW_DELETE
 private:
 
-    void Process(const bool &/*message*/, const xlang::Address from)
+    void Process(const bool &/*message*/, const xlang2::Address from)
     {
         int total(0);
         for (int count = 0; count < 5000; ++count)
@@ -62,7 +61,7 @@ private:
 
 // Manager actor that manages the size of the framework's threadpool.
 // We do this in an actor in this example just to show it can be done that way.
-class Manager : public xlang::Actor
+class Manager : public xlang2::Actor
 {
 public:
 
@@ -73,17 +72,17 @@ public:
 
 private:
 
-    void Manage(const bool &/*message*/, const xlang::Address /*from*/)
+    void Manage(const bool &/*message*/, const xlang2::Address /*from*/)
     {
-        xlang::Framework &framework(GetFramework());
+        xlang2::Framework &framework(GetFramework());
 
         // Query the framework for counter values measuring the threadpool behavior.
         // The first counts how many times the threadpool was pulsed to wake a worker thread,
         // which happens when a message arrives at an actor that isn't already being processed.
         // The second counts how many worker threads were woken, typically as a result of being pulsed.
         // The difference between them indicates roughly how many times no sleeping thread was available.
-        if (framework.GetCounterValue(xlang::Framework::COUNTER_THREADS_PULSED) >
-            framework.GetCounterValue(xlang::Framework::COUNTER_THREADS_WOKEN))
+        if (framework.GetCounterValue(xlang2::Framework::COUNTER_THREADS_PULSED) >
+            framework.GetCounterValue(xlang2::Framework::COUNTER_THREADS_WOKEN))
         {
             ++mCount;
         }
@@ -117,12 +116,12 @@ private:
 int main()
 {
     // Create a framework instance, with just one worker thread initially.
-    xlang::Framework framework(1, 11);
-    xlang::Receiver receiver;
+    xlang2::Framework framework(1, 11);
+    xlang2::Receiver receiver;
 
     // Create a manager actor to manage the threadpool, and a collection of processors.
-    xlang::ActorRef manager(framework.CreateActor<Manager>());
-    xlang::ActorRef processors[PROCESSOR_ACTORS];
+    xlang2::ActorRef manager(framework.CreateActor<Manager>());
+    xlang2::ActorRef processors[PROCESSOR_ACTORS];
 
     for (int index = 0; index < PROCESSOR_ACTORS; ++index)
     {

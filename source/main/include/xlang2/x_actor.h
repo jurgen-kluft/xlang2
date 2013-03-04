@@ -44,7 +44,7 @@ Actor baseclass.
 /**
 Main namespace containing all public API components.
 */
-namespace Theron
+namespace xlang2
 {
 	class ActorRef;
 	class Framework;
@@ -1132,7 +1132,7 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #ifdef _MSC_VER

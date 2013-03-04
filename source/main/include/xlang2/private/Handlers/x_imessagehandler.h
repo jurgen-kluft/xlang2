@@ -7,7 +7,7 @@
 #include "xlang2\private\containers\x_list.h"
 #include "xlang2\private\messages\x_imessage.h"
 
-namespace Theron
+namespace xlang2
 {
 	class Actor;
 
@@ -77,7 +77,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_IMESSAGEHANDLER_H

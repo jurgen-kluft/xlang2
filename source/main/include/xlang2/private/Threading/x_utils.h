@@ -52,7 +52,7 @@
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -443,7 +443,7 @@ numa_cleanup_and_done:
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_THREADING_UTILS_H

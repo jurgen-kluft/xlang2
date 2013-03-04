@@ -24,7 +24,7 @@
 #include "xlang2\private\transport\x_outputsocket.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	Detail::SpinLock EndPoint::smContextLock;
 	uint32_t EndPoint::smContextRefCount(0);
@@ -76,18 +76,18 @@ namespace Theron
 	}
 
 
-	EndPoint::EndPoint(const char *const name, const char *const location, const Parameters /*params*/) :
-	mName(name),
-		mLocation(location),
-		mContext(0),
-		mNameMap(),
-		mMessageFactory(),
-		mNetworkThread(),
-		mRunning(false),
-		mStarted(false),
-		mNetworkLock(),
-		mConnectQueue(),
-		mSendQueue()
+	EndPoint::EndPoint(const char *const name, const char *const location, const Parameters /*params*/)
+		: mName(name)
+		, mLocation(location)
+		, mContext(0)
+		, mNameMap()
+		, mMessageFactory()
+		, mNetworkThread()
+		, mRunning(false)
+		, mStarted(false)
+		, mNetworkLock()
+		, mConnectQueue()
+		, mSendQueue()
 	{
 		THERON_ASSERT_MSG(!mName.IsNull(), "Must supply a unique, non-null name for each endpoint");
 		THERON_ASSERT_MSG(!mLocation.IsNull(), "Must supply a valid port address for each endpoint");
@@ -446,6 +446,6 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 

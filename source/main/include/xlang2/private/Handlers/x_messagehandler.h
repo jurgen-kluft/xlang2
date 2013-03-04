@@ -12,7 +12,7 @@
 #include "xlang2\private\messages\x_messagetraits.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	class Actor;
 
@@ -111,7 +111,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_MESSAGEHANDLER_H

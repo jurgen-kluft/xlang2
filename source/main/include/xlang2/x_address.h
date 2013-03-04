@@ -11,7 +11,7 @@ Address object by which messages are addressed.
 #include "xlang2\private\network\x_index.h"
 #include "xlang2\private\network\x_string.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -349,7 +349,7 @@ namespace Theron
 	};
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_ADDRESS_H

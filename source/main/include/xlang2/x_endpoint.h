@@ -33,7 +33,7 @@ An endpoint in a connected network of processes, potentially on remote hosts.
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -316,7 +316,7 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #ifdef _MSC_VER

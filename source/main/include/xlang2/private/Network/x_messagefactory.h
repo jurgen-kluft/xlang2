@@ -20,7 +20,7 @@
 #include "xlang2\private\network\x_string.h"
 #include "xlang2\private\threading\x_spinlock.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -291,7 +291,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_NETWORK_MESSAGEFACTORY_H

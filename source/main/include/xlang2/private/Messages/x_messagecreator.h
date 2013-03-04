@@ -9,7 +9,7 @@
 #include "xlang2\private\messages\x_imessage.h"
 #include "xlang2\private\messages\x_message.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -68,7 +68,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_MESSAGES_MESSAGECREATOR_H

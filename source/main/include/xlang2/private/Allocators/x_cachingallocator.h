@@ -17,7 +17,7 @@
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -39,7 +39,7 @@ namespace Theron
 		A caching allocator that caches free memory blocks of various small sizes.
 		*/
 		template <uint32_t POOL_COUNT, class LockType = NullCachingAllocatorLock>
-		class CachingAllocator : public Theron::IAllocator
+		class CachingAllocator : public xlang2::IAllocator
 		{
 		public:
 
@@ -282,7 +282,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #ifdef _MSC_VER

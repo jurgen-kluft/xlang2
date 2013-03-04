@@ -11,7 +11,7 @@ Manager for allocators used within Theron.
 #include "xlang2\x_defines.h"
 #include "xlang2\x_iallocator.h"
 
-namespace Theron
+namespace xlang2
 {
 	/**
 	\brief Singleton class that manages allocators for use by Theron.
@@ -132,7 +132,7 @@ namespace Theron
 	};
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_ALLOCATORMANAGER_H

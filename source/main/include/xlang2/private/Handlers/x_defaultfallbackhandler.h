@@ -16,7 +16,7 @@
 #endif //THERON_ENABLE_UNHANDLED_MESSAGE_CHECKS
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -57,7 +57,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #undef THERON_FALLBACK_HANDLER_ARG

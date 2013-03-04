@@ -9,7 +9,7 @@
 #include "xlang2\private\messages\x_messagetraits.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -66,46 +66,8 @@ namespace Theron
 			}
 		};
 
-
-		// Specialization of MessageCast for the case where the message has no type name.
-		// This specialization uses C++ built-in RTTI instead of the explicitly stored type names.
-		template <>
-		class MessageCast<false>
-		{
-		public:
-
-			/**
-			Attempts to read a value of the given type from a given message.
-			\note Returns a null pointer if the message is of the wrong type.
-			*/
-			template <class ValueType>
-			THERON_FORCEINLINE static const Message<ValueType> *CastMessage(const IMessage *const message)
-			{
-				THERON_ASSERT(message);
-
-#if THERON_ENABLE_MESSAGE_REGISTRATION_CHECKS
-				// We're running the specialization of this class that's used for messages without
-				// registered type ids/names, so this message hasn't been registered.
-				THERON_FAIL_MSG("Message type is not registered");
-#endif // THERON_ENABLE_MESSAGE_REGISTRATION_CHECKS
-
-				// Explicit type IDs must be defined for all message types or none at all.
-				THERON_ASSERT_MSG(message->TypeName() == 0, "Only some message types are registered!");
-
-				// Try to convert the given message to a message of the expected type.
-				// The dynamic_cast used here requires Runtime Type Information (RTTI) support.
-				// If you see a failure here then check RTTI is enabled in your build,
-				// or if you actually intend to turn it off then register your message type name
-				// with THERON_REGISTER_MESSAGE() -- see the RegisteringMessages sample.
-				// That causes the default (unspecialized) version of this class to be used,
-				// which doesn't try to use dynamic_cast so doesn't require RTTI.
-				return dynamic_cast<const Message<ValueType> *>(message);
-			}
-		};
-
-
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_HANDLERS_MESSAGECAST_H

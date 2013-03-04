@@ -1,6 +1,6 @@
 #include "xlang2\private\handlers\x_handlercollection.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -55,6 +55,6 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 

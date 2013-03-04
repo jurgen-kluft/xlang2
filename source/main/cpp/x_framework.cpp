@@ -22,7 +22,7 @@
 #endif //_MSC_VER
 
 
-namespace Theron
+namespace xlang2
 {
 	void Framework::Initialize()
 	{
@@ -492,7 +492,7 @@ namespace Theron
 	}
 
 
-} // namespace Theron
+} // namespace xlang2
 
 
 #ifdef _MSC_VER

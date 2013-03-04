@@ -3,7 +3,7 @@
 
 #include "xlang2\x_basictypes.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -38,7 +38,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_ALIGNMENT_MESSAGEALIGNMENT_H

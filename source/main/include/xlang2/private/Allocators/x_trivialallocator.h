@@ -5,7 +5,7 @@
 #include "xlang2\x_basictypes.h"
 #include "xlang2\x_iallocator.h"
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -114,7 +114,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_ALLOCATORS_TRIVIALALLOCATOR_H

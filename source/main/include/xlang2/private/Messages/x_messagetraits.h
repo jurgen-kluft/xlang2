@@ -1,7 +1,7 @@
 #ifndef THERON_DETAIL_MESSAGES_MESSAGETRAITS_H
 #define THERON_DETAIL_MESSAGES_MESSAGETRAITS_H
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -71,7 +71,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_MESSAGES_MESSAGETRAITS_H

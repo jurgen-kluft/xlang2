@@ -13,7 +13,7 @@
 #include "xlang2\private\threading\x_utils.h"
 
 
-namespace Theron
+namespace xlang2
 {
 	namespace Detail
 	{
@@ -224,7 +224,7 @@ namespace Theron
 
 
 	} // namespace Detail
-} // namespace Theron
+} // namespace xlang2
 
 
 #endif // THERON_DETAIL_MAILBOXPROCESSOR_THREADPOOL_H
