@@ -1,0 +1,422 @@
+<Package Name="xlang2" Group="com.virtuos.tnt">
+	<Versions>
+		<Version>1.0.0</Version>
+	</Versions>
+
+	<Variables>
+		<Name>xlang2</Name>
+		<Language>C++</Language>
+		<GUID_Main>bc8151eb-5dce-4131-8775-5a381916e783</GUID_Main>
+		<GUID_UnitTest>2bf2b594-6ec8-46d4-adfb-03a6db267135</GUID_UnitTest>
+	</Variables>
+
+	<DirectoryStructure>
+		<Item Folder="docs\manuals"/>
+		<Item Folder="docs\references"/>
+		<Item Folder="source\main\cpp"/>
+		<Item Folder="source\main\include\${Name}"/>
+		<Item Folder="source\main\include\${Name}\private"/>
+		<Item Folder="source\main\resources"/>
+		<Item Folder="source\test\cpp"/>
+		<Item Folder="source\test\include\${Name}"/>
+		<Item Folder="source\test\include\${Name}\private"/>
+		<Item Folder="source\test\resources"/>
+		<Item Folder="target"/>
+		<Item Folder="tools"/>
+	</DirectoryStructure>
+
+	<Content>
+		<Item Src="pom.*" Dst="" />
+		<Item Src="source\main\cpp\**\*.cpp" Dst="source\main\cpp\" />
+		<Item Src="source\main\include\**\*.h" Dst="source\main\include\" />
+		<Item Src="source\main\resources\**\*.*" Dst="source\main\resources\" />
+		<Item Src="libs\**\*.*" Dst="libs\" />
+		<Item Src="docs\**\*.*" Dst="docs\" />
+		<Item Src="tools\**\*.*" Dst="Tools\" />
+		<Item Src="target\${Name}\outdir\${Name}_DevDebug_${Platform}\${Name}_DevDebug_${Platform}.lib" Dst="libs\" Required="True"/>
+		<Item Src="target\${Name}\outdir\${Name}_DevRelease_${Platform}\${Name}_DevRelease_${Platform}.lib" Dst="libs\" Required="True"/>
+		<Item Src="target\${Name}\outdir\${Name}_DevFinal_${Platform}\${Name}_DevFinal_${Platform}.lib" Dst="libs\" Required="True"/>
+		<Item Src="target\${Name}\outdir\${Name}_TestDebug_${Platform}\${Name}_TestDebug_${Platform}.lib" Dst="libs\" Required="True"/>
+		<Item Src="target\${Name}\outdir\${Name}_TestRelease_${Platform}\${Name}_TestRelease_${Platform}.lib" Dst="libs\" Required="True"/>
+	</Content>
+
+	<Dependency Package="xbase">
+		<Group>com.virtuos.tnt</Group>
+		<Version>[1.0,)</Version>
+		<Type>Package</Type>
+	</Dependency>
+
+	<ProjectProperties>
+		<Properties DependencyType="Root" Platform="*">
+			<PropertyGroup Label="xlang2_TargetDirs">
+				<xlang2_RootDir>$(SolutionDir)</xlang2_RootDir>
+				<xlang2_LibraryDir>$(SolutionDir)target\xlang2\outdir\xlang2_$(Configuration)_$(Platform)\</xlang2_LibraryDir>
+				<xlang2_IncludeDir>$(SolutionDir)source\main\include\</xlang2_IncludeDir>
+			</PropertyGroup>
+		</Properties>
+				
+		<Properties DependencyType="Package" Platform="*">
+			<PropertyGroup Label="xlang2_TargetDirs">
+				<xlang2_RootDir>${Location}</xlang2_RootDir> 
+				<xlang2_LibraryDir>${Location}libs\</xlang2_LibraryDir>
+				<xlang2_IncludeDir>${Location}source\main\include\</xlang2_IncludeDir>
+			</PropertyGroup>
+		</Properties>
+	
+		<Properties DependencyType="Source" Platform="*">
+			<PropertyGroup Label="xlang2_TargetDirs">
+				<xlang2_RootDir>$(SolutionDir)target\xlang2\</xlang2_RootDir> 
+				<xlang2_LibraryDir>$(SolutionDir)target\xlang2\target\xlang2\outdir\xlang2_$(Configuration)_$(Platform)\</xlang2_LibraryDir>
+				<xlang2_IncludeDir>$(SolutionDir)target\xlang2\source\main\include\</xlang2_IncludeDir>
+			</PropertyGroup>
+		</Properties>
+	</ProjectProperties>
+	
+	<Project Name="${Name}" Language="${Language}" Location="source\main\cpp" Scope="Public" DependsOn="xbase:xbase">
+		<ProjectFile>
+			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<PropertyGroup Label="Globals">
+					<ProjectGuid>{${GUID_Main}}</ProjectGuid>
+				</PropertyGroup>
+				<ImportGroup Label="TargetDirs">
+					<Import Project="$(SolutionDir)target\${Name}\${Name}.$(Platform).props" Condition="exists('$(SolutionDir)target\${Name}\${Name}.$(Platform).props')" Label="${Name}_TargetDir" />
+				</ImportGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir);</AdditionalLibraryDirectories>
+						<AdditionalDependencies>#${Name}_DevDebug_$(Platform).lib</AdditionalDependencies>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir);</AdditionalLibraryDirectories>
+						<AdditionalDependencies>#${Name}_DevRelease_$(Platform).lib</AdditionalDependencies>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevFinal|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir);</AdditionalLibraryDirectories>
+						<AdditionalDependencies>#${Name}_DevFinal_$(Platform).lib</AdditionalDependencies>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir);</AdditionalLibraryDirectories>
+						<AdditionalDependencies>#${Name}_TestDebug_$(Platform).lib</AdditionalDependencies>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir);</AdditionalLibraryDirectories>
+						<AdditionalDependencies>#${Name}_TestRelease_$(Platform).lib</AdditionalDependencies>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemGroup>
+					<ClCompile Include="source\main\cpp\**\*.cpp" />
+				</ItemGroup>
+				<ItemGroup>
+					<ClInclude Include="source\main\include\${Name}\**\*.h" />
+				</ItemGroup>
+			</Project>
+		</ProjectFile>
+	</Project>
+	
+	<Project Name="${Name}_ManagingTheThreadpool" Language="${Language}" Location="source\samples\ManagingTheThreadPool" Scope="Private" DependsOn="${Name}:${Name}">
+		<ProjectFile>
+			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<PropertyGroup Label="Globals">
+					<ProjectGuid>{${GUID_UnitTest}}</ProjectGuid>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\ManagingTheThreadPool;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\ManagingTheThreadPool;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemGroup>
+					<ClCompile Include="source\samples\ManagingTheThreadPool\**\*.cpp" />
+				</ItemGroup>
+				<ItemGroup>
+					<ClInclude Include="source\samples\ManagingTheThreadPool\**\*.h" />
+				</ItemGroup>
+			</Project>
+		</ProjectFile>
+	</Project>
+
+	<Project Name="${Name}_DefaultMessageHandler" Language="${Language}" Location="source\samples\DefaultMessageHandler" Scope="Private" DependsOn="${Name}:${Name}">
+		<ProjectFile>
+			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<PropertyGroup Label="Globals">
+					<ProjectGuid>{${GUID_UnitTest}}</ProjectGuid>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\DefaultMessageHandler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\DefaultMessageHandler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemGroup>
+					<ClCompile Include="source\samples\DefaultMessageHandler\**\*.cpp" />
+				</ItemGroup>
+				<ItemGroup>
+					<ClInclude Include="source\samples\DefaultMessageHandler\**\*.h" />
+				</ItemGroup>
+			</Project>
+		</ProjectFile>
+	</Project>
+	
+	<Project Name="${Name}_DerivedMessageTypes" Language="${Language}" Location="source\samples\DerivedMessageTypes" Scope="Private" DependsOn="${Name}:${Name}">
+		<ProjectFile>
+			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<PropertyGroup Label="Globals">
+					<ProjectGuid>{${GUID_UnitTest}}</ProjectGuid>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\DerivedMessageTypes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\DerivedMessageTypes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemGroup>
+					<ClCompile Include="source\samples\DerivedMessageTypes\**\*.cpp" />
+				</ItemGroup>
+				<ItemGroup>
+					<ClInclude Include="source\samples\DerivedMessageTypes\**\*.h" />
+				</ItemGroup>
+			</Project>
+		</ProjectFile>
+	</Project>
+
+	<Project Name="${Name}_DynamicHandlerRegistration" Language="${Language}" Location="source\samples\DynamicHandlerRegistration" Scope="Private" DependsOn="${Name}:${Name}">
+		<ProjectFile>
+			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<PropertyGroup Label="Globals">
+					<ProjectGuid>{${GUID_UnitTest}}</ProjectGuid>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\DynamicHandlerRegistration;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\DynamicHandlerRegistration;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemGroup>
+					<ClCompile Include="source\samples\DynamicHandlerRegistration\**\*.cpp" />
+				</ItemGroup>
+				<ItemGroup>
+					<ClInclude Include="source\samples\DynamicHandlerRegistration\**\*.h" />
+				</ItemGroup>
+			</Project>
+		</ProjectFile>
+	</Project>
+	
+	<Project Name="${Name}_EnvelopeMessages" Language="${Language}" Location="source\samples\EnvelopeMessages" Scope="Private" DependsOn="${Name}:${Name}">
+		<ProjectFile>
+			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<PropertyGroup Label="Globals">
+					<ProjectGuid>{${GUID_UnitTest}}</ProjectGuid>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\EnvelopeMessages;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\EnvelopeMessages;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemGroup>
+					<ClCompile Include="source\samples\EnvelopeMessages\**\*.cpp" />
+				</ItemGroup>
+				<ItemGroup>
+					<ClInclude Include="source\samples\EnvelopeMessages\**\*.h" />
+				</ItemGroup>
+			</Project>
+		</ProjectFile>
+	</Project>
+	
+	<Project Name="${Name}_FallbackHandler" Language="${Language}" Location="source\samples\FallbackHandler" Scope="Private" DependsOn="${Name}:${Name}">
+		<ProjectFile>
+			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<PropertyGroup Label="Globals">
+					<ProjectGuid>{${GUID_UnitTest}}</ProjectGuid>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\FallbackHandler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\samples\FallbackHandler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemGroup>
+					<ClCompile Include="source\samples\FallbackHandler\**\*.cpp" />
+				</ItemGroup>
+				<ItemGroup>
+					<ClInclude Include="source\samples\FallbackHandler\**\*.h" />
+				</ItemGroup>
+			</Project>
+		</ProjectFile>
+	</Project>
+
+	<Project Name="${Name}_test" Language="${Language}" Location="source\test\cpp" Scope="Private" DependsOn="${Name}:${Name};xunittest:xunittest">
+		<ProjectFile>
+			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<PropertyGroup Label="Globals">
+					<ProjectGuid>{${GUID_UnitTest}}</ProjectGuid>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|Win32'" Label="Configuration">
+					<ConfigurationType>Application</ConfigurationType>
+				</PropertyGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\test\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|Win32'">
+					<ClCompile>
+						<AdditionalIncludeDirectories>$(${Name}_RootDir)source\test\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+					</ClCompile>
+					<Link>
+						<AdditionalDependencies>${Name}_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+						<AdditionalLibraryDirectories>$(${Name}_LibraryDir)</AdditionalLibraryDirectories>
+					</Link>
+				</ItemDefinitionGroup>
+				<ItemGroup>
+					<ClCompile Include="source\test\cpp\**\*.cpp" />
+				</ItemGroup>
+				<ItemGroup>
+					<ClInclude Include="source\test\include\**\*.h" />
+				</ItemGroup>
+			</Project>
+		</ProjectFile>
+	</Project>
+</Package>
+
+
+
+
