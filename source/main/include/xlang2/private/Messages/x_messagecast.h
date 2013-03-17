@@ -29,10 +29,6 @@ namespace xlang2
 		called at all, using a partial template specialization trick, and the C++ RTTI
 		functionality can be turned off (usually by means of a compiler option).
 
-		\note Partial template specialization is used here as a device to avoid
-		introducing a hardcoded dependency on C++ RTTI. The dependency can be avoided
-		by defining non-zero type IDs for all message types used in the application.
-
 		\tparam HAS_TYPE_ID A flag indicating whether the message type has a name.
 		*/
 		template <bool HAS_TYPE_ID>

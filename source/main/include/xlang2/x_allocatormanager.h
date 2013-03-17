@@ -30,13 +30,12 @@ namespace xlang2
 	class MyAllocator : public Theron::IAllocator
 	{
 	public:
+					MyAllocator();
+		virtual		~MyAllocator();
 
-	MyAllocator();
-	virtual ~MyAllocator();
-
-	virtual void *Allocate(const SizeType size);
-	virtual void *AllocateAligned(const SizeType size, const SizeType alignment);
-	virtual void Free(void *const memory);
+		virtual void *Allocate(const SizeType size);
+		virtual void *AllocateAligned(const SizeType size, const SizeType alignment);
+		virtual void Free(void *const memory);
 	};
 
 	MyAllocator allocator;
@@ -116,9 +115,9 @@ namespace xlang2
 		/**
 		Default constructor. Private, since the AllocatorManager is a singleton class.
 		*/
-		inline AllocatorManager() :
-		mDefaultAllocator(),
-			mAllocator(&mDefaultAllocator)
+		inline AllocatorManager()
+			: mDefaultAllocator()
+			, mAllocator(&mDefaultAllocator)
 		{
 		}
 

@@ -6,7 +6,6 @@
 Actor baseclass.
 */
 
-
 #include "xlang2\x_defines.h"
 
 // NOTE: Must include xs.h before standard headers to avoid warnings in MS headers!
@@ -241,22 +240,20 @@ namespace xlang2
 		class Actor : public Theron::Actor
 		{
 		public:
+			struct IdentifyMessage
+			{
+			};
 
-		struct IdentifyMessage
-		{
-		};
-
-		explicit Actor(Theron::Framework &framework) : Theron::Actor(framework)
-		{
-		RegisterHandler(this, &Actor::Identify);
-		}
+			explicit Actor(Theron::Framework &framework) : Theron::Actor(framework)
+			{
+				RegisterHandler(this, &Actor::Identify);
+			}
 
 		private:
-
-		inline void Identify(const IdentifyMessage &message, const Theron::Address from)
-		{
-		printf("Actor address is: %d\n", GetAddress().AsInteger());
-		}
+			inline void Identify(const IdentifyMessage &message, const Theron::Address from)
+			{
+				printf("Actor address is: %d\n", GetAddress().AsInteger());
+			}
 		};
 		\endcode
 
@@ -295,25 +292,25 @@ namespace xlang2
 		{
 		public:
 
-		explicit Car(Theron::Framework &framework) : Theron::Actor(framework)
-		{
-		mWheels[0] = new Wheel(GetFramework());
-		mWheels[1] = new Wheel(GetFramework());
-		mWheels[2] = new Wheel(GetFramework());
-		mWheels[3] = new Wheel(GetFramework());
-		}
+			explicit Car(Theron::Framework &framework) : Theron::Actor(framework)
+			{
+				mWheels[0] = new Wheel(GetFramework());
+				mWheels[1] = new Wheel(GetFramework());
+				mWheels[2] = new Wheel(GetFramework());
+				mWheels[3] = new Wheel(GetFramework());
+			}
 
-		Car()
-		{
-		delete mWheels[0];
-		delete mWheels[1];
-		delete mWheels[2];
-		delete mWheels[3];
-		}
+			Car()
+			{
+				delete mWheels[0];
+				delete mWheels[1];
+				delete mWheels[2];
+				delete mWheels[3];
+			}
 
 		private:
 
-		Wheel *mWheels[4];
+			Wheel *mWheels[4];
 		};
 		\endcode
 
@@ -497,9 +494,7 @@ namespace xlang2
 		\return True, if the registration was successful. Failure may indicate out-of-memory.
 		*/
 		template <class ActorType, class ValueType>
-		inline bool RegisterHandler(
-			ActorType *const actor,
-			void (ActorType::*handler)(const ValueType &message, const Address from));
+		inline bool RegisterHandler(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
 
 		/**
 		\brief Deregisters a previously registered message handler.
@@ -572,9 +567,7 @@ namespace xlang2
 		on destruction.
 		*/
 		template <class ActorType, class ValueType>
-		inline bool DeregisterHandler(
-			ActorType *const actor,
-			void (ActorType::*handler)(const ValueType &message, const Address from));
+		inline bool DeregisterHandler(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
 
 		/**
 		\brief Checks whether the given message handler is registered with the actor.
@@ -585,9 +578,7 @@ namespace xlang2
 		of times it has been \ref DeregisterHandler "deregistered".
 		*/
 		template <class ActorType, class ValueType>
-		inline bool IsHandlerRegistered(
-			ActorType *const actor,
-			void (ActorType::*handler)(const ValueType &message, const Address from));
+		inline bool IsHandlerRegistered(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
 
 		/**
 		\brief Sets the default message handler executed for unhandled messages.
@@ -599,18 +590,16 @@ namespace xlang2
 		class Actor : public Theron::Actor
 		{
 		public:
-
-		explicit Actor(Theron::Framework &framework) : Theron::Actor(framework)
-		{
-		SetDefaultHandler(this, &Actor::DefaultHandler);
-		}
+			explicit Actor(Theron::Framework &framework) : Theron::Actor(framework)
+			{
+				SetDefaultHandler(this, &Actor::DefaultHandler);
+			}
 
 		private:
-
-		void DefaultHandler(const Theron::Address from)
-		{
-		printf("Actor received unknown message from address '%d'\n", from.AsInteger());
-		}
+			void DefaultHandler(const Theron::Address from)
+			{
+				printf("Actor received unknown message from address '%d'\n", from.AsInteger());
+			}
 		};
 		\endcode
 
@@ -627,9 +616,7 @@ namespace xlang2
 		\param handler Member function pointer identifying the message handler function.
 		*/
 		template <class ActorType>
-		inline bool SetDefaultHandler(
-			ActorType *const actor,
-			void (ActorType::*handler)(const Address from));
+		inline bool SetDefaultHandler(ActorType *const actor, void (ActorType::*handler)(const Address from));
 
 		/**
 		\brief Sets the default message handler executed for unhandled messages.
@@ -836,24 +823,24 @@ namespace xlang2
 		{
 		public:
 
-		explicit Processor(Theron::Framework &framework) : Theron::Actor(framework)
-		{
-		RegisterHandler(this, &Processor::Process);
-		}
+			explicit Processor(Theron::Framework &framework) : Theron::Actor(framework)
+			{
+				RegisterHandler(this, &Processor::Process);
+			}
 
 		private:
 
-		void Process(const int &message, const Theron::Address from)
-		{
-		// Use Send when sending messages from non-tail positions.
-		Send(someRequest, someOtherActor);
+			void Process(const int &message, const Theron::Address from)
+			{
+				// Use Send when sending messages from non-tail positions.
+				Send(someRequest, someOtherActor);
 
-		// Do some compute-intensive processing using the message value.
-		// ...
+				// Do some compute-intensive processing using the message value.
+				// ...
 
-		// Send the result as the last action using TailSend.
-		TailSend(result, from);
-		}
+				// Send the result as the last action using TailSend.
+				TailSend(result, from);
+			}
 		};
 		\endcode
 
@@ -874,24 +861,14 @@ namespace xlang2
 		Actor &operator=(const Actor &other);
 
 		/**
-		Legacy ActorRef reference counting support.
-		*/
-		inline void Reference() const;
-		inline bool Dereference() const;
-
-		/**
 		Processes the given message, passing it to handlers registered for its type.
 		*/
-		inline void ProcessMessage(
-			Detail::FallbackHandlerCollection *const fallbackHandlers,
-			Detail::IMessage *const message);
+		inline void ProcessMessage(Detail::FallbackHandlerCollection *const fallbackHandlers, Detail::IMessage *const message);
 
 		/**
 		Handle an unhandled message.
 		*/
-		void Fallback(
-			Detail::FallbackHandlerCollection *const fallbackHandlers,
-			const Detail::IMessage *const message);
+		void Fallback(Detail::FallbackHandlerCollection *const fallbackHandlers, const Detail::IMessage *const message);
 
 		Address mAddress;                                   ///< Unique address of this actor.
 		Framework *mFramework;                              ///< Pointer to the framework within which the actor runs.
@@ -1088,38 +1065,7 @@ namespace xlang2
 		return false;
 	}
 
-
-	THERON_FORCEINLINE void Actor::Reference() const
-	{
-		mRefCount.Increment();
-	}
-
-
-	THERON_FORCEINLINE bool Actor::Dereference() const
-	{
-		uint32_t currentValue(mRefCount.Load());
-		uint32_t newValue(currentValue - 1);
-		uint32_t backoff(0);
-
-		THERON_ASSERT(currentValue > 0);
-
-		// Repeatedly try to atomically decrement the reference count.
-		// We do this by hand so we can atomically find out the new value.
-		while (!mRefCount.CompareExchangeAcquire(currentValue, newValue))
-		{
-			currentValue = mRefCount.Load();
-			newValue = currentValue - 1;
-			Detail::Utils::Backoff(backoff);
-		}
-
-		// Return true if the new reference count is zero.
-		return (newValue == 0);
-	}
-
-
-	THERON_FORCEINLINE void Actor::ProcessMessage(
-		Detail::FallbackHandlerCollection *const fallbackHandlers,
-		Detail::IMessage *const message)
+	THERON_FORCEINLINE void Actor::ProcessMessage(Detail::FallbackHandlerCollection *const fallbackHandlers, Detail::IMessage *const message)
 	{
 		if (mMessageHandlers.Handle(this, message))
 		{

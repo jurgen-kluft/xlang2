@@ -70,6 +70,8 @@ namespace xlang2
 				0,
 				endPointName);
 
+			//@TODO(Jurgen): Do we really have to create a string here? We know the length already so we
+			//               could just use a fixed size array!
 			mName = Detail::String(scopedName);
 		}
 

@@ -125,6 +125,8 @@ namespace xlang2
 
 			THERON_FORCEINLINE static uint32_t GetValueSize()
 			{
+				//@TODO(Jurgen) We better align the size to 4 here instead of just checking the minimum?
+
 				uint32_t valueSize(sizeof(ValueType));
 				const uint32_t minimumAllocationSize(4);
 

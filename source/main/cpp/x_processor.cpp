@@ -31,7 +31,7 @@ namespace xlang2
 			THERON_ASSERT(messageAllocator);
 
 			// Increment the context's message processing event counter.
-			context->mCounters[Theron::COUNTER_MESSAGES_PROCESSED].Increment();
+			context->mCounters[xlang2::COUNTER_MESSAGES_PROCESSED].Increment();
 
 			// Pin the mailbox and get the registered actor and the first queued message.
 			// At this point the mailbox shouldn't be enqueued in any other work items,
