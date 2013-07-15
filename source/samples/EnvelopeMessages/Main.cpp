@@ -26,6 +26,7 @@
 // developed. Use one of those implementations instead (for example the ones in Boost),
 // if they suit your application. The point of this example is to explain the concept.
 //
+#define _HAS_EXCEPTIONS 0
 
 #include <vector>
 #include <assert.h>
@@ -146,7 +147,7 @@ private:
 int main()
 {
     xlang2::Framework framework;
-    xlang2::ActorRef actor(framework.CreateActor<Catcher>());
+    xlang2::Actor actor(framework, "EnvelopeMessages");
 
     // Create an envelope message and fill its owned vector with some values.
     IntegerVectorEnvelope envelope;

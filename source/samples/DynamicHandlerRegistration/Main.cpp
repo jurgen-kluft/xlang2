@@ -61,7 +61,7 @@ private:
 int main()
 {
     xlang2::Framework framework;
-    xlang2::ActorRef exampleActor(framework.CreateActor<ExampleActor>());
+    xlang2::Actor exampleActor(framework, "DynamicHandlerRegistration");
 
     xlang2::Receiver receiver;
 

@@ -72,7 +72,7 @@ private:
 int main()
 {
     xlang2::Framework framework;
-    xlang2::ActorRef simpleActor(framework.CreateActor<SimpleActor>());
+    xlang2::Actor simpleActor(framework, "DerivedMessageTypes");
 
     xlang2::Receiver receiver;
     
@@ -85,7 +85,7 @@ int main()
     // We might have expected three messages in response, with the DerivedMessage
     // triggering both BaseMessageHandler and DerivedMessageHandler. But in
     // practice currently DerivedMessage triggers only DerivedMessageHandler.
-    // This somewhat unexpected behaviour is due to an implementation limitation.
+    // This somewhat unexpected behavior is due to an implementation limitation.
     // Basically we don't know how to do it :)
     receiver.Wait();
     receiver.Wait();

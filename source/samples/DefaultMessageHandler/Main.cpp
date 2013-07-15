@@ -71,14 +71,14 @@ private:
 int main()
 {
     xlang2::Framework framework;
-    xlang2::ActorRef actor(framework.CreateActor<SimpleActor>());
+	xlang2::Actor myActor(framework, "DefaultMessageHandler");
 
     xlang2::Receiver receiver;
     
     // Push a message of type MessageA to the actor.
     // The message type is handled by the actor and will be returned.
     xlang2::Address fromAddress(receiver.GetAddress());
-    if (!actor.Push(SimpleActor::MessageA(), fromAddress))
+    if (!myActor.Push(SimpleActor::MessageA(), fromAddress))
     {
         printf("Failed to push message of type MessageA\n");
     }
@@ -94,7 +94,7 @@ int main()
     // Push() method still returns true, indicating success, because the
     // message was successfully *delivered* to the recipient - even if it
     // was just subsequently ignored or default handled.
-    if (!actor.Push(SimpleActor::MessageB(), fromAddress))
+    if (!myActor.Push(SimpleActor::MessageB(), fromAddress))
     {
         printf("Failed to push message of type MessageB\n");
     }

@@ -22,6 +22,8 @@ namespace xlang2
 	enum Counter
 	{
 		COUNTER_MESSAGES_PROCESSED = 0,     ///< Number of messages processed by the framework.
+		COUNTER_THREADS_PULSED,             ///< Number of times the framework pulsed its threadpool to wake a thread.
+		COUNTER_THREADS_WOKEN,              ///< Number of threads actually woken by pulse events.
 		MAX_COUNTERS                        ///< Number of counters available for querying.
 	};
 

@@ -71,7 +71,7 @@ namespace xlang2
 
 			const void *const messageData(message->GetMessageData());
 			const uint32_t messageSize(message->GetMessageSize());
-			const Theron::Address from(message->From());
+			const xlang2::Address from(message->From());
 
 			THERON_ASSERT(messageData && messageSize);
 

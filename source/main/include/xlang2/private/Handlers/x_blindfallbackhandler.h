@@ -57,7 +57,7 @@ namespace xlang2
 				// Call the handler, passing it the from address and also the message as blind data.
 				const void *const messageData(message->GetMessageData());
 				const uint32_t messageSize(message->GetMessageSize());
-				const Theron::Address from(message->From());
+				const xlang2::Address from(message->From());
 
 				THERON_ASSERT(messageData && messageSize);
 

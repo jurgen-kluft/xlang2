@@ -2,19 +2,16 @@
 // This sample shows how to use a fallback handler to catch unhandled messages.
 //
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_Address.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
+#include "xlang2\x_actor.h"
+#include "xlang2\x_address.h"
+#include "xlang2\x_framework.h"
+#include "xlang2\x_receiver.h"
+#include "xlang2\x_basictypes.h"
 
-
-// Placement new/delete
-void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
-void	operator delete(void* mem, void* )							{ }
 
 // Trivial actor that ignores all messages, so that any sent to it
 // are passed on the fallback handler registered with its owning framework.
-class Actor : public xlang::Actor
+class Actor : public xlang2::Actor
 {
 };
 
@@ -40,7 +37,7 @@ class FailedMessageLog
 public:
 
     // This handler is a 'blind' handler which takes the unhandled message as raw data.
-    inline void Handle(const void *const data, const xlang::u32 size, const xlang::Address from)
+    inline void Handle(const void *const data, const xlang2::uint32_t size, const xlang2::Address from)
     {
         printf("Unhandled message of %d bytes sent from address %d:\n", size, from.AsInteger());
 
@@ -63,8 +60,8 @@ public:
 
 int main()
 {
-    xlang::Framework framework;
-    xlang::Receiver receiver;
+    xlang2::Framework framework;
+    xlang2::Receiver receiver;
     
     // Register the custom fallback handler with the framework.
     // This handler is executed for any messages that either aren't delivered
@@ -77,7 +74,7 @@ int main()
     // Create an actor and send some messages to it, which it doesn't handle.
     // The messages are delivered but not handled by the actor, so are
     // caught by the log registered as the framework's default fallback message handler.
-    xlang::ActorRef actor(framework.CreateActor<Actor>());
+    xlang2::Actor actor(framework, "FallbackHandler");
 
     printf("Sending message (16384, 1.5f) to actor\n");
     framework.Send(Message(16384, 1.5f), receiver.GetAddress(), actor.GetAddress());

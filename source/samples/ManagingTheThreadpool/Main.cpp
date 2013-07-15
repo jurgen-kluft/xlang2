@@ -18,7 +18,7 @@
 // minimum or maximum limit on the number of threadpool threads.
 //
 
-#include "xbase\x_allocator.h"
+//#include "xbase\x_allocator.h"
 
 #include "xlang2\x_actor.h"
 #include "xlang2\x_framework.h"
@@ -34,13 +34,14 @@ static const int REQUEST_BATCH_SIZE = 50;
 //void	operator delete(void* mem, void* )							{ }
 
 // Does some processing in response to messages, and then sends back the result.
-class Processor : public xlang2::Actor
+class MyProcessor : public xlang2::Actor
 {
 public:
 
-    inline Processor()
-    
-        RegisterHandler(this, &Processor::Process);
+    inline MyProcessor(xlang2::Framework& framework, const char* name)
+		: xlang2::Actor(framework, name)
+	{
+        RegisterHandler(this, &MyProcessor::Process);
     }
 
 	//XCORE_CLASS_PLACEMENT_NEW_DELETE
@@ -61,13 +62,13 @@ private:
 
 // Manager actor that manages the size of the framework's threadpool.
 // We do this in an actor in this example just to show it can be done that way.
-class Manager : public xlang2::Actor
+class MyManager : public xlang2::Actor
 {
 public:
 
-    inline Manager() : mNumThreads(1), mCount(0)
+    inline MyManager() : mNumThreads(1), mCount(0)
     {
-        RegisterHandler(this, &Manager::Manage);
+        RegisterHandler(this, &MyManager::Manage);
     }
 
 private:
@@ -81,8 +82,11 @@ private:
         // which happens when a message arrives at an actor that isn't already being processed.
         // The second counts how many worker threads were woken, typically as a result of being pulsed.
         // The difference between them indicates roughly how many times no sleeping thread was available.
-        if (framework.GetCounterValue(xlang2::Framework::COUNTER_THREADS_PULSED) >
-            framework.GetCounterValue(xlang2::Framework::COUNTER_THREADS_WOKEN))
+
+		// @NOTE
+		// xlang2: These counters are not implemented yet in the new framework so this test will not
+		//         work correctly!
+        if (framework.GetCounterValue(xlang2::COUNTER_THREADS_PULSED) > framework.GetCounterValue(xlang2::COUNTER_THREADS_WOKEN))
         {
             ++mCount;
         }
@@ -116,17 +120,16 @@ private:
 int main()
 {
     // Create a framework instance, with just one worker thread initially.
-    xlang2::Framework framework(1, 11);
+    xlang2::Framework* framework = new xlang2::Framework(11);
     xlang2::Receiver receiver;
 
     // Create a manager actor to manage the threadpool, and a collection of processors.
-    xlang2::ActorRef manager(framework.CreateActor<Manager>());
-    xlang2::ActorRef processors[PROCESSOR_ACTORS];
-
-    for (int index = 0; index < PROCESSOR_ACTORS; ++index)
-    {
-        processors[index] = framework.CreateActor<Processor>();
-    }
+    MyManager manager;
+    MyProcessor* processors[PROCESSOR_ACTORS];
+	for (xcore::s32 i=0; i<PROCESSOR_ACTORS; ++i)
+	{
+		processors[i] = new MyProcessor(*framework, "processor");
+	}
 
     // Send requests and wait for the results in a loop intended to emulate a real program.
     // In each iteration we send more requests, collect results, and resize the threadpool.
@@ -142,18 +145,27 @@ int main()
         {
             for (int index = 0; index < PROCESSOR_ACTORS; ++index)
             {
-                framework.Send((true), receiver.GetAddress(), processors[index].GetAddress());
+                framework->Send((true), receiver.GetAddress(), processors[index]->GetAddress());
             }
         }
 
         // Tell the manager to update the threadpool size.
-        framework.Send((true), receiver.GetAddress(), manager.GetAddress());
+        framework->Send((true), receiver.GetAddress(), manager.GetAddress());
 
         // Consume any new results that have arrived, without waiting.
         results -= receiver.Consume(results);
-        printf("\rThreads: %d\tResults: %d\t\t", framework.GetNumThreads(), results);
+        printf("\rThreads: %d\tResults: %d\t\t", framework->GetNumThreads(), results);
     }
 
-    printf("\nPeak threads: %d\n", framework.GetPeakThreads());
+    printf("\nPeak threads: %d\n", framework->GetPeakThreads());
+	delete framework;
+	framework = 0;
+
+	for (xcore::s32 i=0; i<PROCESSOR_ACTORS; ++i)
+	{
+		delete processors[i];
+		processors[i] = 0;
+	}
+
 }
 

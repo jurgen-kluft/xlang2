@@ -24,9 +24,6 @@ namespace xlang2
 		, mRefCount(0)
 		, mMemory(0)
 	{
-		// Check that the actor isn't being constructed by Framework::CreateActor.
-		THERON_ASSERT_MSG(Detail::ActorRegistry::Lookup(this) == 0, "Use default Theron::Actor::Actor() baseclass constructor with CreateActor().");
-
 		// Claim an available directory index and mailbox for this actor.
 		mFramework->RegisterActor(this, name);
 	}

@@ -9,7 +9,6 @@ Framework that hosts and executes actors.
 
 #include <new>
 
-#include "xlang2\x_actorref.h"
 #include "xlang2\x_address.h"
 #include "xlang2\x_align.h"
 #include "xlang2\x_allocatormanager.h"
@@ -27,7 +26,6 @@ Framework that hosts and executes actors.
 #include "xlang2\private\directory/x_entry.h"
 #include "xlang2\private\handlers/x_defaultfallbackhandler.h"
 #include "xlang2\private\handlers/x_fallbackhandlercollection.h"
-#include "xlang2\private\legacy/x_actorregistry.h"
 #include "xlang2\private\mailboxes/x_mailbox.h"
 #include "xlang2\private\messages/x_messagecreator.h"
 #include "xlang2\private\messages/x_messagesender.h"
@@ -152,7 +150,6 @@ namespace xlang2
 	public:
 
 		friend class Actor;
-		friend class ActorRef;
 		friend class Detail::MessageSender;
 
 		/**
@@ -304,38 +301,6 @@ namespace xlang2
 		\note In distributed applications, use the constructor variant that accepts an \ref EndPoint.
 		*/
 		inline explicit Framework(const Parameters &params = Parameters());
-
-		/**
-		\brief Constructor.
-
-		Constructs a framework object with the given parameters, tied to the given network endpoint.
-		A framework that is tied to a network endpoint is able to send messages to, and receive
-		messages from, remote actors hosted in frameworks tied to other endpoints.
-
-		\code
-		class MyActor : public Theron::Actor
-		{
-		public:
-
-		explicit MyActor(Theron::Framework &framework) : Theron::Actor(framework)
-		{
-		}
-		};
-
-		const Theron::EndPoint::Parameters params("endpoint_one", "tcp://192.168.10.104:5555");
-		Theron::EndPoint endPoint(params);
-
-		Theron::Framework framework(endPoint, "framework_one");
-		MyActor actorOne(framework);
-		\endcode
-
-		\param endPoint The endpoint to which the framework instance is tied.
-		\param name An optional user-defined name for the framework, which must be unique within the context of the endpoint.
-		\param params Optional parameters object providing construction parameters.
-
-		\note The name string parameter is copied, so can be destroyed after the call.
-		*/
-		inline Framework(EndPoint &endPoint, const char *const name = 0, const Parameters &params = Parameters());
 
 		/**
 		\brief Destructor.
@@ -703,120 +668,6 @@ namespace xlang2
 			ObjectType *const actor,
 			void (ObjectType::*handler)(const void *const data, const uint32_t size, const Address from));
 
-		/**
-		\brief Deprecated method provided for backwards compatibility.
-
-		\note In versions of Theron from 4.0 onwards, there is no need to use this method.
-		It is provided only for backwards compatibility.
-
-		In versions of Theron prior to 4.0, actors couldn't be constructed directly
-		in user code. Instead you had to ask a Framework to create one for you, using
-		the CreateActor method template. Instead of returning the actor itself,
-		CreateActor returned a <i>reference</i> to the actor in the form of an \ref ActorRef
-		object.
-
-		\code
-		// LEGACY CODE!
-		class MyActor : public Theron::Actor
-		{
-		};
-
-		int main()
-		{
-		Theron::Framework framework;
-		Theron::ActorRef actorRef(framework.CreateActor<MyActor>());
-		}
-		\endcode
-
-		In versions of Theron starting with 4.0, Actors are first-class citizens and
-		behave like vanilla C++ objects. They can be constructed directly with no
-		call to Framework::CreateActor. Once constructed they are referenced directly
-		by user code with no need for ActorRef proxy objects.
-
-		When writing new code, follow the new, simpler construction pattern where actors
-		are constructed directly and not referenced by ActorRefs:
-
-		\code
-		// New code
-		class MyActor : public Theron::Actor
-		{
-		public:
-
-		MyActor(Theron::Framework &framework) : Theron::Actor(framework)
-		{
-		}
-		};
-
-		int main()
-		{
-		Theron::Framework framework;
-		MyActor actor(framework);
-		}
-		\endcode
-		*/
-		template <class ActorType>
-		ActorRef CreateActor();
-
-		/**
-		\brief Deprecated method provided for backwards compatibility.
-
-		\note In versions of Theron from 4.0 onwards, there is no need to use this method.
-		It is provided only for backwards compatibility.
-
-		In versions of Theron prior to 4.0, actors couldn't be constructed directly
-		in user code. Instead you had to ask a Framework to create one for you, using
-		the CreateActor method template. Instead of returning the actor itself,
-		CreateActor returned a <i>reference</i> to the actor in the form of an \ref ActorRef
-		object.
-
-		\code
-		// LEGACY CODE!
-		class MyActor : public Theron::Actor
-		{
-		public:
-
-		struct Parameters
-		{
-		int mSomeParameter;
-		}
-
-		MyActor(const Parameters &params)
-		{
-		}
-		};
-
-		int main()
-		{
-		Theron::Framework framework;
-		MyActor::Parameters params;
-		params.mSomeParameter = 0;
-		Theron::ActorRef actorRef(framework.CreateActor<MyActor>(params));
-		}
-		\endcode
-
-		When writing new code, follow the new, simpler construction pattern where actors
-		are constructed directly and not referenced by ActorRefs:
-
-		\code
-		// New code
-		class MyActor : public Theron::Actor
-		{
-		public:
-
-		MyActor(Theron::Framework &framework, const int mSomeParameter) : Theron::Actor(framework)
-		{
-		}
-		};
-
-		int main()
-		{
-		Theron::Framework framework;
-		MyActor actor(framework, 0);
-		}
-		\endcode
-		*/
-		template <class ActorType>
-		ActorRef CreateActor(const typename ActorType::Parameters &params);
 
 	private:
 
@@ -945,32 +796,6 @@ namespace xlang2
 		Initialize();
 	}
 
-
-	inline Framework::Framework(EndPoint &endPoint, const char *const name, const Parameters &params) :
-	mEndPoint(&endPoint),
-		mParams(params),
-		mIndex(0),
-		mName(name),
-		mMailboxes(),
-		mFallbackHandlers(),
-		mDefaultFallbackHandler(),
-		mSharedWorkQueueSpinLock(),
-		mMessageAllocator(AllocatorManager::Instance().GetAllocator()),
-		mProcessorContext(&mMailboxes, &mSharedWorkQueueSpinLock, &mFallbackHandlers, &mMessageAllocator),
-		mManagerThread(),
-		mRunning(false),
-		mTargetThreadCount(0),
-		mPeakThreadCount(0),
-		mThreadCount(0),
-		mThreadContexts(),
-		mThreadContextLock()
-	{
-		Detail::BuildDescriptor::Check();
-
-		Initialize();
-	}
-
-
 	inline Framework::~Framework()
 	{
 		Release();
@@ -1037,110 +862,6 @@ namespace xlang2
 	THERON_FORCEINLINE uint32_t Framework::GetIndex() const
 	{
 		return mIndex;
-	}
-
-
-	template <class ActorType>
-	inline ActorRef Framework::CreateActor()
-	{
-		IAllocator *const allocator(AllocatorManager::Instance().GetAllocator());
-
-		// The actor type may need to be allocated with non-default alignment.
-		const uint32_t actorSize(static_cast<uint32_t>(sizeof(ActorType)));
-		const uint32_t actorAlignment(Detail::ActorAlignment<ActorType>::ALIGNMENT);
-
-		void *const actorMemory(allocator->AllocateAligned(actorSize, actorAlignment));
-		if (actorMemory == 0)
-		{
-			return ActorRef();
-		}
-
-		// Get the address of the Actor baseclass using some cast trickery.
-		// Note that the Actor may not always be the first baseclass, so the address may differ!
-		// The static_cast takes the offset of the Actor baseclass within ActorType into account.
-		ActorType *const pretendActor(reinterpret_cast<ActorType *>(actorMemory));
-		Actor *const actorBase(static_cast<Actor *>(pretendActor));
-
-		// Register the actor in the registry while we construct it.
-		// This stores an entry passing the actor pointers to its memory block and owning framework.
-		void *const entryMemory(allocator->Allocate(sizeof(typename Detail::ActorRegistry::Entry)));
-		if (entryMemory == 0)
-		{
-			allocator->Free(actorMemory, actorSize);
-			return ActorRef();
-		}
-
-		typename Detail::ActorRegistry::Entry *const entry = new (entryMemory) typename Detail::ActorRegistry::Entry;
-
-		entry->mActor = actorBase;
-		entry->mFramework = this;
-		entry->mMemory = actorMemory;
-
-		Detail::ActorRegistry::Register(entry);
-
-		// Construct the actor for real in the allocated memory.
-		// The Actor picks up the registered framework pointer in its default constructor.
-		// This relies on the user not incorrectly calling the non-default Actor constructor!
-		ActorType *const actor = new (actorMemory) ActorType();
-
-		// Deregister and free the entry.
-		Detail::ActorRegistry::Deregister(entry);
-
-		allocator->Free(entryMemory, sizeof(typename Detail::ActorRegistry::Entry));
-
-		return ActorRef(actor);
-	}
-
-
-	template <class ActorType>
-	inline ActorRef Framework::CreateActor(const typename ActorType::Parameters &params)
-	{
-		IAllocator *const allocator(AllocatorManager::Instance().GetAllocator());
-
-		// The actor type may need to be allocated with non-default alignment.
-		const uint32_t actorSize(static_cast<uint32_t>(sizeof(ActorType)));
-		const uint32_t actorAlignment(Detail::ActorAlignment<ActorType>::ALIGNMENT);
-
-		void *const actorMemory(allocator->AllocateAligned(actorSize, actorAlignment));
-		if (actorMemory == 0)
-		{
-			return ActorRef();
-		}
-
-		// Get the address of the Actor baseclass using some cast trickery.
-		// Note that the Actor may not always be the first baseclass, so the address may differ!
-		// The static_cast takes the offset of the Actor baseclass within ActorType into account.
-		ActorType *const pretendActor(reinterpret_cast<ActorType *>(actorMemory));
-		Actor *const actorBase(static_cast<Actor *>(pretendActor));
-
-		// Register the actor in the registry while we construct it.
-		// This stores an entry passing the actor pointers to its memory block and owning framework.
-		void *const entryMemory(allocator->Allocate(sizeof(typename Detail::ActorRegistry::Entry)));
-		if (entryMemory == 0)
-		{
-			allocator->Free(actorMemory, actorSize);
-			return ActorRef();
-		}
-
-		typename Detail::ActorRegistry::Entry *const entry = new (entryMemory) typename Detail::ActorRegistry::Entry;
-
-		entry->mActor = actorBase;
-		entry->mFramework = this;
-		entry->mMemory = actorMemory;
-
-		Detail::ActorRegistry::Register(entry);
-
-		// Construct the actor for real in the allocated memory.
-		// The Actor picks up the registered framework pointer in its default constructor.
-		// This relies on the user not incorrectly calling the non-default Actor constructor!
-		ActorType *const actor = new (actorMemory) ActorType(params);
-
-		// Deregister and free the entry.
-		Detail::ActorRegistry::Deregister(entry);
-
-		allocator->Free(entryMemory, sizeof(typename Detail::ActorRegistry::Entry));
-
-		return ActorRef(actor);
 	}
 
 
