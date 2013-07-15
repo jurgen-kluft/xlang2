@@ -17,7 +17,6 @@ Actor baseclass.
 #include "xlang2\x_align.h"
 #include "xlang2\x_allocatormanager.h"
 #include "xlang2\x_basictypes.h"
-#include "xlang2\x_endpoint.h"
 #include "xlang2\x_framework.h"
 #include "xlang2\x_iallocator.h"
 
@@ -173,45 +172,12 @@ namespace xlang2
 		The optional name parameter allows constructed actor objects to be given unique,
 		user-defined names. These names can then be used to send messages to the actors in
 		situations where the sending code has no direct reference to the destination actor, so
-		can't query it for its address. This is especially important when sending messages
-		to remote actors, where the actor is also required to be constructed in a Framework
-		tied to an \ref EndPoint.
+		can't query it for its address.
 
 		If no name parameter is provided, or the name parameter is null, then the constructed
 		actor is given an automatically generated name. The generated name can still be used
 		to send messages, but since it is automatically generated it can't be known to the
-		user except by calling \ref GetAddress. Note that the generated name is only guaranteed
-		to be unique across all processes if each \ref EndPoint in the system is given a unique,
-		user-defined name on construction.
-
-		\note Sending a message to an actor using only its name requires an \ref EndPoint.
-		It involves a hashed lookup, so is slower than using an address retrieved directly
-		from the target actor using \ref GetAddress.
-
-		\code
-		class MyActor : public Theron::Actor
-		{
-		public:
-
-		MyActor(Theron::Framework &framework, const char *const name) :
-		Theron::Actor(framework, name)
-		{
-		}
-		};
-
-		Theron::EndPoint::Parameters params("local", "tcp://192.168.10.104:5555");
-		Theron::EndPoint endPoint(params);
-		Theron::Framework framework(endPoint);
-		Theron::Receiver receiver(endPoint, "receiver");
-
-		MyActor actorOne(framework, "actor_one");
-		MyActor actorTwo(framework, "actor_two");
-
-		framework.Send(
-		std::string("hello"),
-		Theron::Address("receiver"),
-		Theron::Address("actor_one"));
-		\endcode
+		user except by calling \ref GetAddress. 
 
 		A powerful feature of actors is that they can create other actors, allowing
 		the building of complex subsystems of actors using object-like abstraction.
@@ -911,15 +877,7 @@ namespace xlang2
 		void (ActorType::*handler)(const ValueType &message, const Address from))
 	{
 		// When an actor registers a handler for a message type, we get told about
-		// the type. So we take the opportunity to also register the type against
-		// its name with the network endpoint (if the framework is tied to one). This
-		// enables us to recognize the type when it arrives in a network message as a block
-		// blind of data tagged with a type name.
-		if (mFramework->mEndPoint)
-		{
-			mFramework->mEndPoint->RegisterMessageType<ValueType>();
-		}
-
+		// the type. 
 		return mMessageHandlers.Add(handler);
 	}
 
@@ -987,7 +945,7 @@ namespace xlang2
 		{
 			// Call the message sending implementation using the acquired processor context.
 			return Detail::MessageSender::Send(
-				mFramework->mEndPoint,
+				0,
 				processorContext,
 				mFramework->GetIndex(),
 				message,
@@ -1026,7 +984,7 @@ namespace xlang2
 			// Call the message sending implementation using the acquired processor context.
 			// We schedule the receiving actor, if any, on the local queue of the processing worker thread, if any.
 			return Detail::MessageSender::Send(
-				mFramework->mEndPoint,
+				0,
 				processorContext,
 				mFramework->GetIndex(),
 				message,
@@ -1055,7 +1013,7 @@ namespace xlang2
 		{
 			// Send the message to the actor's own address.
 			return Detail::MessageSender::Send(
-				mFramework->mEndPoint,
+				0,
 				processorContext,
 				mFramework->GetIndex(),
 				message,

@@ -5,7 +5,6 @@
 #include <xs/xs.h>
 #endif // THERON_XS
 
-#include "xlang2\x_endpoint.h"
 #include "xlang2\x_framework.h"
 
 #include "xlang2\private\directory\x_staticdirectory.h"
@@ -20,7 +19,7 @@ namespace xlang2
 	namespace Detail
 	{
 		bool MessageSender::Send(
-			EndPoint *const endPoint,
+			void* const dummy,
 			Processor::Context *const processorContext,
 			const uint32_t localFrameworkIndex,
 			IMessage *const message,
@@ -28,24 +27,6 @@ namespace xlang2
 			const bool localQueue)
 		{
 			Index index(address.mIndex);
-
-			// Index of zero implies the actor is addressed only by name and may be remote.
-			if (index.mUInt32 == 0)
-			{
-				const String &name(address.GetName());
-
-				THERON_ASSERT(!name.IsNull());
-				THERON_ASSERT_MSG(endPoint, "Sending messages addressed by name requires a Theron::EndPoint");
-
-				// Search the local endPoint for a mailbox with the given name.
-				// If there is a local match we fall through using the retrieved index, and we don't
-				// bother to push the message out onto the network, since names are globally unique.
-				if (!endPoint->Lookup(name, index))
-				{
-					// If there isn't a local match we send the message out onto the network.
-					return endPoint->RequestSend(message, name);
-				}
-			}
 
 			// Which framework is the addressed entity in?
 			const uint32_t targetFrameworkIndex(index.mComponents.mFramework);

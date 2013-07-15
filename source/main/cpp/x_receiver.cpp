@@ -5,7 +5,6 @@
 #include <xs/xs.h>
 #endif // THERON_XS
 
-#include "xlang2\x_endpoint.h"
 #include "xlang2\x_receiver.h"
 
 #include "xlang2\private\directory\x_staticdirectory.h"
@@ -17,8 +16,7 @@
 namespace xlang2
 {
 	Receiver::Receiver()
-		: mEndPoint(0)
-		, mName()
+		: mName()
 		, mAddress()
 		, mMessageHandlers()
 		, mSpinLock()
@@ -26,19 +24,6 @@ namespace xlang2
 	{
 		Initialize();
 	}
-
-
-	Receiver::Receiver(EndPoint &endPoint, const char *const name)
-		: mEndPoint(&endPoint)
-		, mName(name)
-		, mAddress()
-		, mMessageHandlers()
-		, mSpinLock()
-		, mMessagesReceived(0)
-	{
-		Initialize();
-	}
-
 
 	Receiver::~Receiver()
 	{
@@ -56,19 +41,8 @@ namespace xlang2
 			char rawName[16];
 			Detail::NameGenerator::Generate(rawName, receiverIndex);
 
-			const char *endPointName(0);
-			if (mEndPoint)
-			{
-				endPointName = mEndPoint->GetName();
-			}
-
 			char scopedName[256];
-			Detail::NameGenerator::Combine(
-				scopedName,
-				256,
-				rawName,
-				0,
-				endPointName);
+			Detail::NameGenerator::Combine(scopedName,256,rawName,0,"");
 
 			//@TODO(Jurgen): Do we really have to create a string here? We know the length already so we
 			//               could just use a fixed size array!
@@ -86,34 +60,12 @@ namespace xlang2
 		entry.Lock();
 		entry.SetEntity(this);
 		entry.Unlock();
-
-		if (mEndPoint)
-		{
-			// Check that no mailbox with this name already exists.
-			Detail::Index dummy;
-			if (mEndPoint->Lookup(mName, dummy))
-			{
-				THERON_FAIL_MSG("Can't create two actors or receivers with the same name");
-			}
-
-			// Register the receiver 'mailbox' with the endPoint so it can be found using its name.
-			if (!mEndPoint->Register(mName, index))
-			{
-				THERON_FAIL_MSG("Failed to register receiver with the network endpoint");
-			}
-		}
 	}
 
 
 	void Receiver::Release()
 	{
 		const Address &address(GetAddress());
-
-		// Deregister the receiver 'mailbox' with the endPoint so it can't be found anymore.
-		if (mEndPoint)
-		{
-			mEndPoint->Deregister(address.GetName());
-		}
 
 		// Deregister the receiver, so that the worker threads will leave it alone.
 		Detail::StaticDirectory<Receiver>::Deregister(address.AsInteger());

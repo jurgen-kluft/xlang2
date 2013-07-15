@@ -41,7 +41,6 @@ namespace xlang2
 		class MessageSender;
 	}
 
-	class EndPoint;
 
 	/**
 	\brief A standalone entity that can accept messages sent by \ref Actor "actors".
@@ -87,59 +86,6 @@ namespace xlang2
 		*/
 		Receiver();
 
-		/**
-		\brief Explicit constructor.
-
-		Constructs a receiver tied to the given \ref EndPoint, with the given unique name.
-
-		The optional name parameter allows constructed receiver objects to be given unique,
-		user-defined names. These names can then be used to send messages to the receiver in
-		situations where the sending code has no direct reference to the destination receiver, so
-		can't query it for its address. This is especially important when sending messages
-		to remote receiver, and requires that the receiver is tied to  an \ref EndPoint.
-
-		If the name parameter is null then the receiver is given an automatically generated name,
-		which is guaranteed to be globally unique as long as the names of all EndPoints are globally
-		unique. The generated name can still be used to send messages (if the receiver is tied to
-		an EndPoint), but since it is automatically generated it can't be known in advance and
-		must be queried by calling \ref GetAddress.
-
-		\code
-		class MyActor : public Theron::Actor
-		{
-		public:
-
-		MyActor(Theron::Framework &framework, const char *const name) :
-		Theron::Actor(framework, name)
-		{
-		RegisterHandler(this, &MyActor::Handler);
-		}
-
-		private:
-
-		void Handler(const std::string &message, const Theron::Address from)
-		{
-		Send(std::string("world"), Theron::Address("receiver"));
-		}
-		};
-
-		Theron::EndPoint::Parameters params("local", "tcp://192.168.10.104:5555");
-		Theron::EndPoint endPoint(params);
-		Theron::Framework framework(endPoint);
-		Theron::Receiver receiver(endPoint, "receiver");
-
-		MyActor actor(framework, "actor");
-
-		framework.Send(
-		std::string("hello"),
-		Theron::Address("receiver"),
-		Theron::Address("actor"));
-		\endcode
-
-		\note The name defined on construction should be globally unique across all connected hosts.
-		The name string parameter is copied, so can be destroyed after the call.
-		*/
-		explicit Receiver(EndPoint &endPoint, const char *const name = 0);
 
 		/**
 		\brief Destructor.
@@ -364,7 +310,6 @@ namespace xlang2
 		*/
 		inline void Push(Detail::IMessage *const message);
 
-		EndPoint *const mEndPoint;                          ///< Pointer to the network endpoint, if any, to which this receiver is tied.
 		Detail::String mName;                               ///< Name of the receiver.
 		Address mAddress;                                   ///< Unique address of this receiver.
 		MessageHandlerList mMessageHandlers;                ///< List of registered message handlers.
@@ -385,16 +330,6 @@ namespace xlang2
 		ClassType *const owner,
 		void (ClassType::*handler)(const ValueType &message, const Address from))
 	{
-		// When a receiver registers a handler for a message type, we get told about
-		// the type. So we take the opportunity to also register the type against
-		// its name with the network endpoint (if the receiver is tied to one). This enables
-		// us to recognize the type when it arrives in a network message as a block
-		// blind of data tagged with a type name.
-		if (mEndPoint)
-		{
-			mEndPoint->RegisterMessageType<ValueType>();
-		}
-
 		// If the message value type has a valid (non-zero) type name defined for it,
 		// then we use explicit type names to match messages to handlers.
 		// The default value of zero will indicates that no type name has been defined,

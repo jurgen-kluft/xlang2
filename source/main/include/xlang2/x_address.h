@@ -19,7 +19,6 @@ namespace xlang2
 	}
 
 
-	class EndPoint;
 	class Framework;
 	class Receiver;
 
@@ -54,9 +53,7 @@ namespace xlang2
 	class Address
 	{
 	public:
-
 		friend class Detail::MessageSender;
-		friend class EndPoint;
 		friend class Framework;
 		friend class Receiver;
 

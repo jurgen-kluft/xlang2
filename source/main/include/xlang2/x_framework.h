@@ -46,11 +46,7 @@ Framework that hosts and executes actors.
 
 namespace xlang2
 {
-
-
 	class Actor;
-	class EndPoint;
-
 
 	/**
 	\brief Enumerates the available worker thread yield strategies.
@@ -298,7 +294,6 @@ namespace xlang2
 		MyActor actorTwo(framework);
 		\endcode
 
-		\note In distributed applications, use the constructor variant that accepts an \ref EndPoint.
 		*/
 		inline explicit Framework(const Parameters &params = Parameters());
 
@@ -604,9 +599,7 @@ namespace xlang2
 		\param handler Member function pointer identifying the fallback handler function.
 		*/
 		template <typename ObjectType>
-		inline bool SetFallbackHandler(
-			ObjectType *const actor,
-			void (ObjectType::*handler)(const Address from));
+		inline bool SetFallbackHandler(ObjectType *const actor, void (ObjectType::*handler)(const Address from));
 
 		/**
 		\brief Sets the fallback message handler executed for unhandled messages.
@@ -664,9 +657,7 @@ namespace xlang2
 		\param handler Member function pointer identifying the fallback handler function.
 		*/
 		template <typename ObjectType>
-		inline bool SetFallbackHandler(
-			ObjectType *const actor,
-			void (ObjectType::*handler)(const void *const data, const uint32_t size, const Address from));
+		inline bool SetFallbackHandler(ObjectType *const actor, void (ObjectType::*handler)(const void *const data, const uint32_t size, const Address from));
 
 
 	private:
@@ -707,9 +698,7 @@ namespace xlang2
 		/**
 		Receives a message from another framework.
 		*/
-		inline bool FrameworkReceive(
-			Detail::IMessage *const message,
-			const Address &address);
+		inline bool FrameworkReceive(Detail::IMessage *const message, const Address &address);
 
 		/**
 		Checks whether all work queues in the framework are empty.
@@ -727,7 +716,6 @@ namespace xlang2
 		*/
 		void ManagerThreadProc();
 
-		EndPoint *const mEndPoint;                              ///< Pointer to the network endpoint, if any, to which this framework is tied.
 		const Parameters mParams;                               ///< Copy of parameters struct provided on construction.
 		uint32_t mIndex;                                        ///< Non-zero index of this framework, unique within the local process.
 		Detail::String mName;                                   ///< Name of this framework.
@@ -747,52 +735,48 @@ namespace xlang2
 	};
 
 
-	inline Framework::Framework(const uint32_t threadCount) :
-	mEndPoint(0),
-		mParams(threadCount),
-		mIndex(0),
-		mName(),
-		mMailboxes(),
-		mFallbackHandlers(),
-		mDefaultFallbackHandler(),
-		mSharedWorkQueueSpinLock(),
-		mMessageAllocator(AllocatorManager::Instance().GetAllocator()),
-		mProcessorContext(&mMailboxes, &mSharedWorkQueueSpinLock, &mFallbackHandlers, &mMessageAllocator),
-		mManagerThread(),
-		mRunning(false),
-		mTargetThreadCount(0),
-		mPeakThreadCount(0),
-		mThreadCount(0),
-		mThreadContexts(),
-		mThreadContextLock()
+	inline Framework::Framework(const uint32_t threadCount)
+		: mParams(threadCount)
+		, mIndex(0)
+		, mName()
+		, mMailboxes()
+		, mFallbackHandlers()
+		, mDefaultFallbackHandler()
+		, mSharedWorkQueueSpinLock()
+		, mMessageAllocator(AllocatorManager::Instance().GetAllocator())
+		, mProcessorContext(&mMailboxes, &mSharedWorkQueueSpinLock, &mFallbackHandlers, &mMessageAllocator)
+		, mManagerThread()
+		, mRunning(false)
+		, mTargetThreadCount(0)
+		, mPeakThreadCount(0)
+		, mThreadCount(0)
+		, mThreadContexts()
+		, mThreadContextLock()
 	{
 		Detail::BuildDescriptor::Check();
-
 		Initialize();
 	}
 
 
-	inline Framework::Framework(const Parameters &params) :
-	mEndPoint(0),
-		mParams(params),
-		mIndex(0),
-		mName(),
-		mMailboxes(),
-		mFallbackHandlers(),
-		mDefaultFallbackHandler(),
-		mSharedWorkQueueSpinLock(),
-		mMessageAllocator(AllocatorManager::Instance().GetAllocator()),
-		mProcessorContext(&mMailboxes, &mSharedWorkQueueSpinLock, &mFallbackHandlers, &mMessageAllocator),
-		mManagerThread(),
-		mRunning(false),
-		mTargetThreadCount(0),
-		mPeakThreadCount(0),
-		mThreadCount(0),
-		mThreadContexts(),
-		mThreadContextLock()
+	inline Framework::Framework(const Parameters &params) 
+		: mParams(params)
+		, mIndex(0)
+		, mName()
+		, mMailboxes()
+		, mFallbackHandlers()
+		, mDefaultFallbackHandler()
+		, mSharedWorkQueueSpinLock()
+		, mMessageAllocator(AllocatorManager::Instance().GetAllocator())
+		, mProcessorContext(&mMailboxes, &mSharedWorkQueueSpinLock, &mFallbackHandlers, &mMessageAllocator)
+		, mManagerThread()
+		, mRunning(false)
+		, mTargetThreadCount(0)
+		, mPeakThreadCount(0)
+		, mThreadCount(0)
+		, mThreadContexts()
+		, mThreadContextLock()
 	{
 		Detail::BuildDescriptor::Check();
-
 		Initialize();
 	}
 
@@ -817,47 +801,30 @@ namespace xlang2
 
 		// Call the message sending implementation using the processor context of the framework.
 		// When messages are sent using Framework::Send there's no obvious worker thread.
-		return Detail::MessageSender::Send(
-			mEndPoint,
-			&mProcessorContext,
-			mIndex,
-			message,
-			address);
+		return Detail::MessageSender::Send(0, &mProcessorContext, mIndex, message, address);
 	}
 
 
-	THERON_FORCEINLINE bool Framework::FrameworkReceive(
-		Detail::IMessage *const message,
-		const Address &address)
+	THERON_FORCEINLINE bool Framework::FrameworkReceive(Detail::IMessage *const message, const Address &address)
 	{
 		// Call the generic message sending function.
 		// We use our own local context here because we're receiving the message.
-		return Detail::MessageSender::Send(
-			mEndPoint,
-			&mProcessorContext,
-			mIndex,
-			message,
-			address);
+		return Detail::MessageSender::Send(0, &mProcessorContext, mIndex, message, address);
 	}
 
 
 	template <typename ObjectType>
-	inline bool Framework::SetFallbackHandler(
-		ObjectType *const handlerObject,
-		void (ObjectType::*handler)(const Address from))
+	inline bool Framework::SetFallbackHandler(ObjectType *const handlerObject,void (ObjectType::*handler)(const Address from))
 	{
 		return mFallbackHandlers.Set(handlerObject, handler);
 	}
 
 
 	template <typename ObjectType>
-	inline bool Framework::SetFallbackHandler(
-		ObjectType *const handlerObject,
-		void (ObjectType::*handler)(const void *const data, const uint32_t size, const Address from))
+	inline bool Framework::SetFallbackHandler(ObjectType *const handlerObject,void (ObjectType::*handler)(const void *const data, const uint32_t size, const Address from))
 	{
 		return mFallbackHandlers.Set(handlerObject, handler);
 	}
-
 
 	THERON_FORCEINLINE uint32_t Framework::GetIndex() const
 	{

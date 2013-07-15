@@ -18,8 +18,6 @@
 
 namespace xlang2
 {
-	class EndPoint;
-
 	namespace Detail
 	{
 		/**
@@ -32,7 +30,7 @@ namespace xlang2
 			/**
 			Sends an allocated message to the given address.
 			*/
-			static bool Send(EndPoint *const endPoint,
+			static bool Send(void * const dummy,
 				Processor::Context *const processorContext,
 				const uint32_t localFrameworkIndex,
 				IMessage *const message,

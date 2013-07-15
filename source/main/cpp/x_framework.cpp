@@ -4,7 +4,6 @@
 #include "xlang2\x_assert.h"
 #include "xlang2\x_allocatormanager.h"
 #include "xlang2\x_defines.h"
-#include "xlang2\x_endpoint.h"
 #include "xlang2\x_framework.h"
 #include "xlang2\x_iallocator.h"
 
@@ -112,20 +111,9 @@ namespace xlang2
 		{
 			char rawName[16];
 			Detail::NameGenerator::Generate(rawName, mailboxIndex);
-
-			const char *endPointName(0);
-			if (mEndPoint)
-			{
-				endPointName = mEndPoint->GetName();        
-			}
-
+			
 			char scopedName[256];
-			Detail::NameGenerator::Combine(
-				scopedName,
-				256,
-				rawName,
-				mName.GetValue(),
-				endPointName);
+			Detail::NameGenerator::Combine(scopedName, 256, rawName, mName.GetValue(), "");
 
 			mailboxName = Detail::String(scopedName);
 		}
@@ -144,22 +132,6 @@ namespace xlang2
 		// Set the actor's mailbox address.
 		// The address contains the index of the framework and the index of the mailbox within the framework.
 		actor->mAddress = mailboxAddress;
-
-		if (mEndPoint)
-		{
-			// Check that no mailbox with this name already exists.
-			Detail::Index dummy;
-			if (mEndPoint->Lookup(mailboxName, dummy))
-			{
-				THERON_FAIL_MSG("Can't create two actors or receivers with the same name");
-			}
-
-			// Register the mailbox with the endPoint so it can be found using its name.
-			if (!mEndPoint->Register(mailboxName, index))
-			{
-				THERON_FAIL_MSG("Failed to register actor with the network endpoint");
-			}
-		}
 	}
 
 
@@ -167,12 +139,6 @@ namespace xlang2
 	{
 		const Address address(actor->GetAddress());
 		const Detail::String &mailboxName(address.GetName());
-
-		// Deregister the mailbox with the endPoint so it can't be found anymore.
-		if (mEndPoint)
-		{
-			mEndPoint->Deregister(mailboxName);
-		}
 
 		// Deregister the actor, so that the worker threads will leave it alone.
 		const uint32_t mailboxIndex(address.AsInteger());
