@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "xbase\x_string_std.h"
+
 #include "xlang2\x_assert.h"
 #include "xlang2\x_basictypes.h"
 #include "xlang2\x_defines.h"
@@ -27,7 +29,7 @@ namespace xlang2
 			inline static void Generate(char *const buffer, const uint32_t id)
 			{
 				THERON_ASSERT(buffer);
-				sprintf(buffer, "%x", id);
+				xcore::x_sprintf(buffer, 5, "%x", id);
 			}
 
 			inline static void Combine(

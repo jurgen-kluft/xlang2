@@ -113,11 +113,11 @@ typedef EnvelopeMessage<IntegerVector> IntegerVectorEnvelope;
 class Catcher : public xlang2::Actor
 {
 public:
-
-    inline Catcher()
-    {
-        RegisterHandler(this, &Catcher::Handler);
-    }
+	explicit Catcher(xlang2::Framework &framework, const char *const name)
+		: xlang2::Actor(framework, name)
+	{
+		RegisterHandler(this, &Catcher::Handler);
+	}
 
 private:
 
@@ -147,7 +147,7 @@ private:
 int main()
 {
     xlang2::Framework framework;
-    xlang2::Actor actor(framework, "EnvelopeMessages");
+    Catcher actor(framework, "EnvelopeMessages");
 
     // Create an envelope message and fill its owned vector with some values.
     IntegerVectorEnvelope envelope;

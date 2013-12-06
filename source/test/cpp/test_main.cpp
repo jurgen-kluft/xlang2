@@ -1,7 +1,7 @@
 #include "xbase\x_base.h"
 #include "xbase\x_console.h"
 #include "xbase\x_allocator.h"
-#include "xbase\x_string.h"
+#include "xbase\x_string_std.h"
 
 #include "xunittest\xunittest.h"
 
@@ -15,7 +15,7 @@ namespace xcore
 		xcore::x_iallocator*	mAllocator;
 	public:
 						UnitTestAllocator(xcore::x_iallocator* allocator)	{ mAllocator = allocator; }
-		virtual void*	Allocate(int size)									{ return mAllocator->allocate(size, 4); }
+		virtual void*	Allocate(xsize_t size)								{ return mAllocator->allocate(size, 4); }
 		virtual void	Deallocate(void* ptr)								{ mAllocator->deallocate(ptr); }
 	};
 
@@ -27,13 +27,13 @@ namespace xcore
 
 		virtual const char*	name() const										{ return "xbase unittest test heap allocator"; }
 
-		virtual void*		allocate(u32 size, u32 alignment)
+		virtual void*		allocate(xsize_t size, u32 alignment)
 		{
 			UnitTest::IncNumAllocations();
 			return mAllocator->allocate(size, alignment);
 		}
 
-		virtual void*		reallocate(void* mem, u32 size, u32 alignment)
+		virtual void*		reallocate(void* mem, xsize_t size, u32 alignment)
 		{
 			if (mem==NULL)
 				return allocate(size, alignment);
@@ -68,9 +68,9 @@ bool gRunUnitTest(UnitTest::TestReporter& reporter)
 	xcore::TestAllocator testAllocator(systemAllocator);
 	gTestAllocator = &testAllocator;
 
-	xcore::x_Init(gTestAllocator);
+	xbase::x_Init();
 	int r = UNITTEST_SUITE_RUN(reporter, xLangUnitTest);
-	xcore::x_Exit();
+	xbase::x_Exit();
 
 	gTestAllocator->release();
 
